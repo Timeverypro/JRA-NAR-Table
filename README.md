@@ -1,2 +1,3 @@
 # JRA-NAR-Table
 https://timeverypro.github.io/JRA-NAR-Table/
+# Still encouting languge buttons bug...
