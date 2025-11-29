@@ -1,510 +1,417 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JRA/NAR 競馬番組表</title>
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f7f9fb;
-        }
-        .race-time {
-            font-weight: 600;
-            color: #1e40af; /* Blue 700 */
-        }
-        .special-race {
-            color: #991b1b; /* Red 800 */
-            font-weight: 700;
-        }
-        .tab-active {
-            border-bottom: 3px solid #1d4ed8; /* Blue 600 */
-            color: #1d4ed8;
-            font-weight: 700;
-        }
-        .lang-active {
-            background-color: #1d4ed8; /* Blue 600 */
-            color: white;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>2025年11月30日 競馬発走表 (netkeiba.com)</title>
+  <style>
+    body {font-family:"Hiragino Kaku Gothic ProN",Meiryo,Arial,sans-serif;background:#f8fff8;margin:0;padding:10px;color:#333;}
+    h1 {text-align:center;color:#006400;margin:20px 0;}
+    .tab-container {max-width:1000px;margin:0 auto;}
+    .main-tabs {display:flex;background:#fff;border-radius:8px 8px 0 0;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+    .main-tab-btn {flex:1;padding:14px;text-align:center;font-weight:bold;cursor:pointer;background:#eee;color:#555;border:none;transition:0.3s;}
+    .main-tab-btn.active {background:#006400;color:white;}
+    .main-tab-btn:hover:not(.active) {background:#90ee90;color:#006400;}
+    .lang-tabs {display:flex;background:#f0f0f0;border-radius:0 0 8px 8px;padding:5px;margin-bottom:10px;}
+    .lang-btn {flex:1;padding:8px;text-align:center;font-size:0.9em;cursor:pointer;background:#ddd;color:#666;border:none;transition:0.3s;border-radius:4px;}
+    .lang-btn.active {background:#006400;color:white;}
+    .lang-btn:hover:not(.active) {background:#90ee90;color:#006400;}
+    .content {display:none;background:white;padding:20px;border-radius:0 0 12px 12px;box-shadow:0 6px 20px rgba(0,0,0,0.1);}
+    .content.active {display:block;}
+    .track {background:#fff;border-radius:12px;padding:15px;margin:20px 0;box-shadow:0 4px 12px rgba(0,0,0,0.05);}
+    .track h2 {color:#005000;border-bottom:3px solid #90ee90;padding-bottom:8px;margin-bottom:10px;}
+    table {width:100%;border-collapse:collapse;margin-top:10px;}
+    th {background:#006400;color:white;padding:10px 6px;font-size:0.95em;text-align:center;}
+    td {padding:10px 6px;border-bottom:1px solid #ddd;text-align:center;}
+    tr:hover {background:#f8fff8;}
+    .race {font-weight:bold;font-size:1.1em;}
+    .g1 {background:gold;color:#b8860b;font-weight:bold;}
+    .g2 {background:silver;color:#444;font-weight:bold;}
+    .g3 {background:#cd7f32;color:white;font-weight:bold;}
+    .op {background:#87ceeb;color:#000;}
+    .turf {color:#008000;}
+    .dirt {color:#8b4513;}
+    .time {font-weight:bold;color:#d00;}
+    footer {text-align:center;margin:40px 0 20px;color:#666;font-size:0.9em;}
+    @media(max-width:768px){
+      .main-tabs, .lang-tabs {flex-direction:column;}
+      table{font-size:0.85em;}
+    }
+  </style>
 </head>
-<body class="p-4 md:p-8">
+<body>
 
-    <div class="max-w-6xl mx-auto bg-white shadow-xl rounded-xl p-4 md:p-8">
-        
-        <!-- Header and Language Selector -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b pb-2">
-            <h1 id="main-title" class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-0">
-                🇯🇵 本日の競馬番組表
-            </h1>
-            <div id="language-selector" class="flex space-x-2 p-1 rounded-full bg-gray-100 shadow-inner">
-                <button data-lang="ja" class="lang-button text-sm font-semibold text-gray-600 px-3 py-1 rounded-full transition duration-150 ease-in-out">JA</button>
-                <button data-lang="en" class="lang-button text-sm font-semibold text-gray-600 px-3 py-1 rounded-full transition duration-150 ease-in-out">EN</button>
-                <button data-lang="th" class="lang-button text-sm font-semibold text-gray-600 px-3 py-1 rounded-full transition duration-150 ease-in-out">TH</button>
-            </div>
-        </div>
+<h1 id="main-title">2025年11月30日 競馬発走表 (netkeiba.com)</h1>
 
-        <!-- Track Selection Tabs -->
-        <div id="track-tabs" class="flex flex-wrap border-b border-gray-200 mb-6 text-sm md:text-base">
-            <button id="tab-tokyo" data-track="tokyo" class="tab-button px-4 py-2 rounded-t-lg transition duration-150 ease-in-out">東京</button>
-            <button id="tab-kyoto" data-track="kyoto" class="tab-button px-4 py-2 rounded-t-lg transition duration-150 ease-in-out">京都</button>
-            <button id="tab-obihiro" data-track="obihiro" class="tab-button px-4 py-2 rounded-t-lg transition duration-150 ease-in-out">帯広</button>
-            <button id="tab-mizusawa" data-track="mizusawa" class="tab-button px-4 py-2 rounded-t-lg transition duration-150 ease-in-out">水沢</button>
-            <button id="tab-kochi" data-track="kochi" class="tab-button px-4 py-2 rounded-t-lg transition duration-150 ease-in-out">高知</button>
-            <button id="tab-saga" data-track="saga" class="tab-button px-4 py-2 rounded-t-lg transition duration-150 ease-in-out">佐賀</button>
-        </div>
+<div class="tab-container">
+  <!-- Main Tabs: JRA / NAR -->
+  <div class="main-tabs">
+    <button class="main-tab-btn active" onclick="openMainTab(event, 'jra')">JRA (中央)</button>
+    <button class="main-tab-btn" onclick="openMainTab(event, 'nar')">NAR (地方)</button>
+  </div>
 
-        <div id="schedule-header" class="mb-4 text-gray-600 text-sm md:text-base">
-            <!-- Dynamic header info will go here -->
-        </div>
+  <!-- Language Tabs for JRA -->
+  <div id="jra-lang-tabs" class="lang-tabs">
+    <button class="lang-btn active" onclick="setLang(event, 'jp', 'jra')">日本語</button>
+    <button class="lang-btn" onclick="setLang(event, 'en', 'jra')">English</button>
+    <button class="lang-btn" onclick="setLang(event, 'th', 'jra')">ไทย</button>
+  </div>
+  <!-- Language Tabs for NAR -->
+  <div id="nar-lang-tabs" class="lang-tabs" style="display:none;">
+    <button class="lang-btn active" onclick="setLang(event, 'jp', 'nar')">日本語</button>
+    <button class="lang-btn" onclick="setLang(event, 'en', 'nar')">English</button>
+    <button class="lang-btn" onclick="setLang(event, 'th', 'nar')">ไทย</button>
+  </div>
 
-        <!-- Schedule Table Container -->
-        <div id="schedule-container" class="overflow-x-auto relative">
-            <table class="min-w-full divide-y divide-gray-200 rounded-lg shadow-md">
-                <thead class="bg-gray-50 sticky top-0">
-                    <tr id="table-header-row">
-                        <!-- Header will be dynamically loaded -->
-                    </tr>
-                </thead>
-                <tbody id="schedule-body" class="bg-white divide-y divide-gray-100">
-                    <!-- Race schedule rows will be dynamically loaded -->
-                </tbody>
-            </table>
-        </div>
+  <!-- JRA Content -->
+  <div id="jra" class="content active">
+    <!-- JP JRA -->
+    <div id="jra-jp" class="lang-content active">
+      <div class="track"><h2>東京競馬場　5回8日目　曇・芝良・ダ良 (netkeiba.com)</h2>
+        <table><tr><th>R</th><th>発走</th><th>レース名</th><th>格</th><th>距離</th></tr>
+          <tr><td class="race">1R</td><td class="time">09:30</td><td>2歳未勝利</td><td></td><td class="dirt">ダ1400m</td></tr>
+          <tr><td class="race">2R</td><td class="time">09:55</td><td>2歳未勝利</td><td></td><td class="turf">芝1600m</td></tr>
+          <tr><td class="race">3R</td><td class="time">10:25</td><td>2歳未勝利</td><td></td><td class="turf">芝1600m</td></tr>
+          <tr><td class="race">4R</td><td class="time">10:55</td><td>2歳未勝利</td><td></td><td class="turf">芝2000m</td></tr>
+          <tr><td class="race">5R</td><td class="time">11:25</td><td>2歳新馬</td><td></td><td class="turf">芝1600m</td></tr>
+          <tr><td class="race">6R</td><td class="time">12:00</td><td>3歳未勝利</td><td></td><td class="dirt">ダ1400m</td></tr>
+          <tr><td class="race">7R</td><td class="time">12:35</td><td>3歳以上1勝クラス</td><td></td><td class="turf">芝1800m</td></tr>
+          <tr><td class="race">8R</td><td class="time">13:10</td><td>アルゼンチン共和国杯</td><td class="g2">GⅡ</td><td class="turf">芝2500m</td></tr>
+          <tr><td class="race">9R</td><td class="time">13:50</td><td>キャピタルS</td><td class="listed">L</td><td class="dirt">ダ1600m</td></tr>
+          <tr><td class="race">10R</td><td class="time">14:20</td><td>京王杯2歳S</td><td class="g2">GⅡ</td><td class="turf">芝1400m</td></tr>
+          <tr><td class="race">11R</td><td class="time">15:00</td><td>東京スポーツ杯2歳S</td><td class="g2">GⅡ</td><td class="turf">芝1800m</td></tr>
+          <tr><td class="race">12R</td><td class="time">15:40</td><td><strong>ジャパンカップ</strong></td><td class="g1">GⅠ</td><td class="turf">芝2400m</td></tr>
+        </table>
+      </div>
+      <div class="track"><h2>京都競馬場　4回8日目　晴・芝良・ダ良 (netkeiba.com)</h2>
+        <table><tr><th>R</th><th>発走</th><th>レース名</th><th>格</th><th>距離</th></tr>
+          <tr><td class="race">1R</td><td class="time">09:40</td><td>2歳未勝利</td><td></td><td class="turf">芝1200m</td></tr>
+          <tr><td class="race">2R</td><td class="time">10:10</td><td>2歳未勝利</td><td></td><td class="turf">芝1800m</td></tr>
+          <tr><td class="race">3R</td><td class="time">10:40</td><td>2歳未勝利</td><td></td><td class="turf">芝2000m</td></tr>
+          <tr><td class="race">4R</td><td class="time">11:10</td><td>3歳以上1勝クラス</td><td></td><td class="dirt">ダ1400m</td></tr>
+          <tr><td class="race">5R</td><td class="time">11:45</td><td>2歳新馬</td><td></td><td class="turf">芝1600m</td></tr>
+          <tr><td class="race">6R</td><td class="time">12:20</td><td>3歳未勝利</td><td></td><td class="turf">芝2000m</td></tr>
+          <tr><td class="race">7R</td><td class="time">13:00</td><td>3歳以上1勝クラス</td><td></td><td class="turf">芝1800m</td></tr>
+          <tr><td class="race">8R</td><td class="time">13:35</td><td>洛陽S</td><td class="listed">L</td><td class="dirt">ダ1200m</td></tr>
+          <tr><td class="race">9R</td><td class="time">14:05</td><td>舞子特別</td><td></td><td class="turf">芝1600m</td></tr>
+          <tr><td class="race">10R</td><td class="time">14:40</td><td>デイリー杯</td><td class="g3">GⅢ</td><td class="turf">芝1600m</td></tr>
+          <tr><td class="race">11R</td><td class="time">15:15</td><td>アリーヴォ賞</td><td class="op">OP</td><td class="turf">芝2000m</td></tr>
+          <tr><td class="race">12R</td><td class="time">15:50</td><td>京阪杯</td><td class="g3">GⅢ</td><td class="turf">芝1200m</td></tr>
+        </table>
+      </div>
     </div>
+    <!-- EN JRA (Translated text stored here) -->
+    <div id="jra-en" class="lang-content">
+      <div class="track"><h2>Tokyo Racecourse - 5th Meeting Day 8 Cloudy/Good Turf & Dirt (netkeiba.com)</h2>
+        <table><tr><th>R</th><th>Post</th><th>Race Name</th><th>Grade</th><th>Dist.</th></tr>
+          <tr><td class="race">1R</td><td class="time">09:30</td><td>2YO Allowance</td><td></td><td class="dirt">D1400m</td></tr>
+          <tr><td class="race">2R</td><td class="time">09:55</td><td>2YO Allowance</td><td></td><td class="turf">T1600m</td></tr>
+          <tr><td class="race">3R</td><td class="time">10:25</td><td>2YO Allowance</td><td></td><td class="turf">T1600m</td></tr>
+          <tr><td class="race">4R</td><td class="time">10:55</td><td>2YO Allowance</td><td></td><td class="turf">T2000m</td></tr>
+          <tr><td class="race">5R</td><td class="time">11:25</td><td>2YO Newcomers</td><td></td><td class="turf">T1600m</td></tr>
+          <tr><td class="race">6R</td><td class="time">12:00</td><td>3YO Allowance</td><td></td><td class="dirt">D1400m</td></tr>
+          <tr><td class="race">7R</td><td class="time">12:35</td><td>3YO+ 1 Win Class</td><td></td><td class="turf">T1800m</td></tr>
+          <tr><td class="race">8R</td><td class="time">13:10</td><td>Argentina Republic Cup</td><td class="g2">G2</td><td class="turf">T2500m</td></tr>
+          <tr><td class="race">9R</td><td class="time">13:50</td><td>Capital Stakes</td><td class="listed">L</td><td class="dirt">D1600m</td></tr>
+          <tr><td class="race">10R</td><td class="time">14:20</td><td>Keio Hai 2YO Stakes</td><td class="g2">G2</td><td class="turf">T1400m</td></tr>
+          <tr><td class="race">11R</td><td class="time">15:00</td><td>Tokyo Sports Hai 2YO Stakes</td><td class="g2">G2</td><td class="turf">T1800m</td></tr>
+          <tr><td class="race">12R</td><td class="time">15:40</td><td><strong>Japan Cup</strong></td><td class="g1">G1</td><td class="turf">T2400m</td></tr>
+        </table>
+      </div>
+      <div class="track"><h2>Kyoto Racecourse - 4th Meeting Day 8 Sunny/Good Turf & Dirt (netkeiba.com)</h2>
+        <table><tr><th>R</th><th>Post</th><th>Race Name</th><th>Grade</th><th>Dist.</th></tr>
+          <tr><td class="race">1R</td><td class="time">09:40</td><td>2YO Allowance</td><td></td><td class="turf">T1200m</td></tr>
+          <tr><td class="race">2R</td><td class="time">10:10</td><td>2YO Allowance</td><td></td><td class="turf">T1800m</td></tr>
+          <tr><td class="race">3R</td><td class="time">10:40</td><td>2YO Allowance</td><td></td><td class="turf">T2000m</td></tr>
+          <tr><td class="race">4R</td><td class="time">11:10</td><td>3YO+ 1 Win Class</td><td></td><td class="dirt">D1400m</td></tr>
+          <tr><td class="race">5R</td><td class="time">11:45</td><td>2YO Newcomers</td><td></td><td class="turf">T1600m</td></tr>
+          <tr><td class="race">6R</td><td class="time">12:20</td><td>3YO Allowance</td><td></td><td class="turf">T2000m</td></tr>
+          <tr><td class="race">7R</td><td class="time">13:00</td><td>3YO+ 1 Win Class</td><td></td><td class="turf">T1800m</td></tr>
+          <tr><td class="race">8R</td><td class="time">13:35</td><td>Rakuyo Stakes</td><td class="listed">L</td><td class="dirt">D1200m</td></tr>
+          <tr><td class="race">9R</td><td class="time">14:05</td><td>Maiko Tokubetsu</td><td></td><td class="turf">T1600m</td></tr>
+          <tr><td class="race">10R</td><td class="time">14:40</td><td>Daily Cup</td><td class="g3">G3</td><td class="turf">T1600m</td></tr>
+          <tr><td class="race">11R</td><td class="time">15:15</td><td>Alivio Sho</td><td class="op">OP</td><td class="turf">T2000m</td></tr>
+          <tr><td class="race">12R</td><td class="time">15:50</td><td>Kyoto Kaisen</td><td class="g3">G3</td><td class="turf">T1200m</td></tr>
+        </table>
+      </div>
+    </div>
+    <!-- TH JRA (Translated text stored here) -->
+    <div id="jra-th" class="lang-content">
+      <div class="track"><h2>สนามโตเกียว - การแข่งครั้งที่ 5 วันที่ 8 (netkeiba.com) เมฆมาก/พื้นหญ้าดี & ดินดี</h2>
+        <table><tr><th>R</th><th>เวลาเริ่ม</th><th>ชื่อการแข่ง</th><th>เกรด</th><th>ระยะทาง</th></tr>
+          <tr><td class="race">1R</td><td class="time">09:30</td><td>2ปี ม้าใหม่</td><td></td><td class="dirt">ดิน 1400ม</td></tr>
+          <tr><td class="race">2R</td><td class="time">09:55</td><td>2ปี ม้าใหม่</td><td></td><td class="turf">หญ้า 1600ม</td></tr>
+          <tr><td class="race">3R</td><td class="time">10:25</td><td>2ปี ม้าใหม่</td><td></td><td class="turf">หญ้า 1600ม</td></tr>
+          <tr><td class="race">4R</td><td class="time">10:55</td><td>2ปี ม้าใหม่</td><td></td><td class="turf">หญ้า 2000ม</td></tr>
+          <tr><td class="race">5R</td><td class="time">11:25</td><td>2ปี ม้าแรกเริ่ม</td><td></td><td class="turf">หญ้า 1600ม</td></tr>
+          <tr><td class="race">6R</td><td class="time">12:00</td><td>3ปี ม้าใหม่</td><td></td><td class="dirt">ดิน 1400ม</td></tr>
+          <tr><td class="race">7R</td><td class="time">12:35</td><td>3ปี+ ชั้น 1 ชนะ</td><td></td><td class="turf">หญ้า 1800ม</td></tr>
+          <tr><td class="race">8R</td><td class="time">13:10</td><td>ถ้วยอาร์เจนตินา</td><td class="g2">G2</td><td class="turf">หญ้า 2500ม</td></tr>
+          <tr><td class="race">9R</td><td class="time">13:50</td><td>แคปิตอล S</td><td class="listed">L</td><td class="dirt">ดิน 1600ม</td></tr>
+          <tr><td class="race">10R</td><td class="time">14:20</td><td>ถ้วยเคียว 2ปี S</td><td class="g2">G2</td><td class="turf">หญ้า 1400ม</td></tr>
+          <tr><td class="race">11R</td><td class="time">15:00</td><td>ถ้วยโตเกียวสปอร์ต 2ปี S</td><td class="g2">G2</td><td class="turf">หญ้า 1800ม</td></tr>
+          <tr><td class="race">12R</td><td class="time">15:40</td><td><strong>ถ้วยญี่ปุ่น</strong></td><td class="g1">G1</td><td class="turf">หญ้า 2400ม</td></tr>
+        </table>
+      </div>
+      <div class="track"><h2>สนามเกียวโต - การแข่งครั้งที่ 4 วันที่ 8 (netkeiba.com) แดดออก/พื้นหญ้าดี & ดินดี</h2>
+        <table><tr><th>R</th><th>เวลาเริ่ม</th><th>ชื่อการแข่ง</th><th>เกรด</th><th>ระยะทาง</th></tr>
+          <tr><td class="race">1R</td><td class="time">09:40</td><td>2ปี ม้าใหม่</td><td></td><td class="turf">หญ้า 1200ม</td></tr>
+          <tr><td class="race">2R</td><td class="time">10:10</td><td>2ปี ม้าใหม่</td><td></td><td class="turf">หญ้า 1800ม</td></tr>
+          <tr><td class="race">3R</td><td class="time">10:40</td><td>2ปี ม้าใหม่</td><td></td><td class="turf">หญ้า 2000ม</td></tr>
+          <tr><td class="race">4R</td><td class="time">11:10</td><td>3ปี+ ชั้น 1 ชนะ</td><td></td><td class="dirt">ดิน 1400ม</td></tr>
+          <tr><td class="race">5R</td><td class="time">11:45</td><td>2ปี ม้าแรกเริ่ม</td><td></td><td class="turf">หญ้า 1600ม</td></tr>
+          <tr><td class="race">6R</td><td class="time">12:20</td><td>3ปี ม้าใหม่</td><td></td><td class="turf">หญ้า 2000ม</td></tr>
+          <tr><td class="race">7R</td><td class="time">13:00</td><td>3ปี+ ชั้น 1 ชนะ</td><td></td><td class="turf">หญ้า 1800ม</td></tr>
+          <tr><td class="race">8R</td><td class="time">13:35</td><td>รากุโย S</td><td class="listed">L</td><td class="dirt">ดิน 1200ม</td></tr>
+          <tr><td class="race">9R</td><td class="time">14:05</td><td>ไมโก Tokubetsu</td><td></td><td class="turf">หญ้า 1600ม</td></tr>
+          <tr><td class="race">10R</td><td class="time">14:40</td><td>เดลี่ Cup</td><td class="g3">G3</td><td class="turf">หญ้า 1600ม</td></tr>
+          <tr><td class="race">11R</td><td class="time">15:15</td><td>อาริโว Sho</td><td class="op">OP</td><td class="turf">หญ้า 2000ม</td></tr>
+          <tr><td class="race">12R</td><td class="time">15:50</td><td>เกียวโต ไคเซ็น</td><td class="g3">G3</td><td class="turf">หญ้า 1200ม</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
 
-    <script>
-        // --- JRA RACE NAME MAPPING ---
-        // Maps Japanese race names to internal keys for robust translation
-        const raceNameMap = {
-            "2歳未勝利": "RACE_2YO_UNBEATEN",
-            "2歳新馬": "RACE_2YO_NEW",
-            "3歳以上1勝クラス": "RACE_3YO_PLUS_1WIN",
-            "3歳以上障害未勝利": "RACE_3YO_PLUS_HANDICAP_UNBEATEN",
-            "3歳以上2勝クラス": "RACE_3YO_PLUS_2WIN",
-            "ベゴニア賞": "RACE_BEGONIA_STAKES",
-            "オリエンタル賞 (2勝)": "RACE_ORIENTAL_STAKES",
-            "アプローズ賞 (2勝)": "RACE_APPLAUSE_STAKES",
-            "ウェルカムS (3勝)": "RACE_WELCOME_STAKES",
-            "ジャパンC (GI) / WIN5": "RACE_JAPAN_CUP",
-            "白菊賞 (1勝)": "RACE_SHIRAGIKU_STAKES",
-            "花園S (3勝)": "RACE_HANAZONO_STAKES",
-            "AリーフS (OP) / WIN5": "RACE_ALEAF_STAKES",
-            "京阪杯 (GIII) / WIN5": "RACE_KEIHAN_HAI",
+  <!-- NAR Content -->
+  <div id="nar" class="content">
+    <!-- JP NAR -->
+    <div id="nar-jp" class="lang-content active">
+      <div class="track"><h2>帯広競馬場　11月開催　晴・ダ良 (nar.netkeiba.com)</h2>
+        <table><tr><th>R</th><th>発走</th><th>レース名</th><th>格</th><th>距離</th></tr>
+          <tr><td class="race">1R</td><td class="time">12:30</td><td>3歳C4一組</td><td></td><td class="dirt">ダ1500m</td></tr>
+          <tr><td class="race">2R</td><td class="time">13:00</td><td>3歳C3二組</td><td></td><td class="dirt">ダ1700m</td></tr>
+          <tr><td class="race">3R</td><td class="time">13:30</td><td>3歳C2三組</td><td></td><td class="dirt">ダ1300m</td></tr>
+          <tr><td class="race">4R</td><td class="time">14:00</td><td>3歳C1四組</td><td></td><td class="dirt">ダ1500m</td></tr>
+          <tr><td class="race">5R</td><td class="time">14:30</td><td>2歳新馬</td><td></td><td class="dirt">ダ1000m</td></tr>
+          <tr><td class="race">6R</td><td class="time">15:00</td><td>2歳未勝利五組</td><td></td><td class="dirt">ダ1300m</td></tr>
+          <tr><td class="race">7R</td><td class="time">15:30</td><td>3歳以上B3六組</td><td></td><td class="dirt">ダ1700m</td></tr>
+          <tr><td class="race">8R</td><td class="time">16:00</td><td>3歳以上B2七組</td><td></td><td class="dirt">ダ1500m</td></tr>
+          <tr><td class="race">9R</td><td class="time">16:30</td><td>3歳以上B1八組</td><td></td><td class="dirt">ダ1300m</td></tr>
+          <tr><td class="race">10R</td><td class="time">17:00</td><td>3歳以上A3九組</td><td></td><td class="dirt">ダ1700m</td></tr>
+          <tr><td class="race">11R</td><td class="time">17:30</td><td>3歳以上A2十組</td><td></td><td class="dirt">ダ1500m</td></tr>
+          <tr><td class="race">12R</td><td class="time">18:00</td><td>3歳以上A1特別</td><td class="op">OP</td><td class="dirt">ダ1600m</td></tr>
+        </table>
+      </div>
+      <div class="track"><h2>水沢競馬場　11月開催　晴・ダ良 (nar.netkeiba.com)</h2>
+        <table><tr><th>R</th><th>発走</th><th>レース名</th><th>格</th><th>距離</th></tr>
+          <tr><td class="race">1R</td><td class="time">17:20</td><td>Ｃ２－１１</td><td></td><td class="dirt">ダ1500m</td></tr>
+          <tr><td class="race">2R</td><td class="time">17:45</td><td>Ｃ２－１０</td><td></td><td class="dirt">ダ1500m</td></tr>
+          <tr><td class="race">3R</td><td class="time">18:10</td><td>Ｃ２－９</td><td></td><td class="dirt">ダ1500m</td></tr>
+          <tr><td class="race">4R</td><td class="time">18:35</td><td>Ｃ２－８</td><td></td><td class="dirt">ダ1500m</td></tr>
+          <tr><td class="race">5R</td><td class="time">19:00</td><td>Ｃ２－７</td><td></td><td class="dirt">ダ1500m</td></tr>
+          <tr><td class="race">6R</td><td class="time">19:25</td><td>Ｃ２－６</td><td></td><td class="dirt">ダ1500m</td></tr>
+          <tr><td class="race">7R</td><td class="time">19:50</td><td>Ｃ２－５</td><td></td><td class="dirt">ダ1500m</td></tr>
+          <tr><td class="race">8R</td><td class="time">20:15</td><td>Ｃ２－４</td><td></td><td class="dirt">ダ1500m</td></tr>
+          <tr><td class="race">9R</td><td class="time">20:40</td><td>Ｃ２－３</td><td></td><td class="dirt">ダ1500m</td></tr>
+          <tr><td class="race">10R</td><td class="time">21:05</td><td>Ｃ２－２</td><td></td><td class="dirt">ダ1500m</td></tr>
+          <tr><td class="race">11R</td><td class="time">21:30</td><td>Ｃ２－１</td><td></td><td class="dirt">ダ1500m</td></tr>
+          <tr><td class="race">12R</td><td class="time">21:55</td><td>Ｃ１－１２</td><td></td><td class="dirt">ダ1800m</td></tr>
+        </table>
+      </div>
+      <div class="track"><h2>高知競馬場　11月開催　晴・ダ良 (nar.netkeiba.com)</h2>
+        <table><tr><th>R</th><th>発走</th><th>レース名</th><th>格</th><th>距離</th></tr>
+          <tr><td class="race">1R</td><td class="time">16:10</td><td>Ｂ３－６組</td><td></td><td class="dirt">ダ1300m</td></tr>
+          <tr><td class="race">2R</td><td class="time">16:35</td><td>Ｂ３－５組</td><td></td><td class="dirt">ダ1300m</td></tr>
+          <tr><td class="race">3R</td><td class="time">17:00</td><td>Ｂ３－４組</td><td></td><td class="dirt">ダ1300m</td></tr>
+          <tr><td class="race">4R</td><td class="time">17:25</td><td>Ｂ３－３組</td><td></td><td class="dirt">ダ1300m</td></tr>
+          <tr><td class="race">5R</td><td class="time">17:50</td><td>Ｂ３－２組</td><td></td><td class="dirt">ダ1300m</td></tr>
+          <tr><td class="race">6R</td><td class="time">18:15</td><td>Ｂ３－１組</td><td></td><td class="dirt">ダ1300m</td></tr>
+          <tr><td class="race">7R</td><td class="time">18:40</td><td>Ｂ２－６組</td><td></td><td class="dirt">ダ1300m</td></tr>
+          <tr><td class="race">8R</td><td class="time">19:05</td><td>Ｂ２－５組</td><td></td><td class="dirt">ダ1300m</td></tr>
+          <tr><td class="race">9R</td><td class="time">19:30</td><td>Ｂ２－４組</td><td></td><td class="dirt">ダ1300m</td></tr>
+          <tr><td class="race">10R</td><td class="time">19:55</td><td>Ｂ２－３組</td><td></td><td class="dirt">ダ1300m</td></tr>
+          <tr><td class="race">11R</td><td class="time">20:20</td><td>Ｂ２－２組</td><td></td><td class="dirt">ダ1300m</td></tr>
+          <tr><td class="race">12R</td><td class="time">20:45</td><td>Ａ１</td><td class="op">OP</td><td class="dirt">ダ1400m</td></tr>
+        </table>
+      </div>
+      <div class="track"><h2>佐賀競馬場　11月開催　晴・ダ良 (nar.netkeiba.com)</h2>
+        <table><tr><th>R</th><th>発走</th><th>レース名</th><th>格</th><th>距離</th></tr>
+          <tr><td class="race">1R</td><td class="time">15:15</td><td>3歳Ｃ２－１</td><td></td><td class="dirt">ダ1000m</td></tr>
+          <tr><td class="race">2R</td><td class="time">15:40</td><td>3歳Ｃ２－２</td><td></td><td class="dirt">ダ1000m</td></tr>
+          <tr><td class="race">3R</td><td class="time">16:05</td><td>3歳Ｃ２－３</td><td></td><td class="dirt">ダ1000m</td></tr>
+          <tr><td class="race">4R</td><td class="time">16:30</td><td>3歳Ｃ１－４</td><td></td><td class="dirt">ダ1000m</td></tr>
+          <tr><td class="race">5R</td><td class="time">16:55</td><td>2歳新馬</td><td></td><td class="dirt">ダ800m</td></tr>
+          <tr><td class="race">6R</td><td class="time">17:20</td><td>2歳未勝利－５</td><td></td><td class="dirt">ダ1000m</td></tr>
+          <tr><td class="race">7R</td><td class="time">17:45</td><td>3歳以上Ｂ３－６</td><td></td><td class="dirt">ダ1200m</td></tr>
+          <tr><td class="race">8R</td><td class="time">18:10</td><td>3歳以上Ｂ２－７</td><td></td><td class="dirt">ダ1200m</td></tr>
+          <tr><td class="race">9R</td><td class="time">18:35</td><td>3歳以上Ｂ１－８</td><td></td><td class="dirt">ダ1200m</td></tr>
+          <tr><td class="race">10R</td><td class="time">19:00</td><td>3歳以上Ａ３－９</td><td></td><td class="dirt">ダ1200m</td></tr>
+          <tr><td class="race">11R</td><td class="time">19:25</td><td>3歳以上Ａ２－１０</td><td></td><td class="dirt">ダ1200m</td></tr>
+          <tr><td class="race">12R</td><td class="time">19:50</td><td>2歳S</td><td class="g3">JpnIII</td><td class="dirt">ダ1200m</td></tr>
+        </table>
+      </div>
+    </div>
+    <!-- EN NAR (Translated text stored here) -->
+    <div id="nar-en" class="lang-content">
+      <div class="track"><h2>Obihiro Racecourse - Nov Meeting Sunny/Good Dirt (nar.netkeiba.com)</h2>
+        <table><tr><th>R</th><th>Post</th><th>Race Name</th><th>Grade</th><th>Dist.</th></tr>
+          <tr><td class="race">1R</td><td class="time">12:30</td><td>3YO C4 Group 1</td><td></td><td class="dirt">D1500m</td></tr>
+          <tr><td class="race">2R</td><td class="time">13:00</td><td>3YO C3 Group 2</td><td></td><td class="dirt">D1700m</td></tr>
+          <tr><td class="race">3R</td><td class="time">13:30</td><td>3YO C2 Group 3</td><td></td><td class="dirt">D1300m</td></tr>
+          <tr><td class="race">4R</td><td class="time">14:00</td><td>3YO C1 Group 4</td><td></td><td class="dirt">D1500m</td></tr>
+          <tr><td class="race">5R</td><td class="time">14:30</td><td>2YO Newcomers</td><td></td><td class="dirt">D1000m</td></tr>
+          <tr><td class="race">6R</td><td class="time">15:00</td><td>2YO Allowance Group 5</td><td></td><td class="dirt">D1300m</td></tr>
+          <tr><td class="race">7R</td><td class="time">15:30</td><td>3YO+ B3 Group 6</td><td></td><td class="dirt">D1700m</td></tr>
+          <tr><td class="race">8R</td><td class="time">16:00</td><td>3YO+ B2 Group 7</td><td></td><td class="dirt">D1500m</td></tr>
+          <tr><td class="race">9R</td><td class="time">16:30</td><td>3YO+ B1 Group 8</td><td></td><td class="dirt">D1300m</td></tr>
+          <tr><td class="race">10R</td><td class="time">17:00</td><td>3YO+ A3 Group 9</td><td></td><td class="dirt">D1700m</td></tr>
+          <tr><td class="race">11R</td><td class="time">17:30</td><td>3YO+ A2 Group 10</td><td></td><td class="dirt">D1500m</td></tr>
+          <tr><td class="race">12R</td><td class="time">18:00</td><td>3YO+ A1 Special</td><td class="op">OP</td><td class="dirt">D1600m</td></tr>
+        </table>
+      </div>
+      <div class="track"><h2>Mizusawa Racecourse - Nov Meeting Sunny/Good Dirt (nar.netkeiba.com)</h2>
+        <table><tr><th>R</th><th>Post</th><th>Race Name</th><th>Grade</th><th>Dist.</th></tr>
+          <tr><td class="race">1R</td><td class="time">17:20</td><td>C2-11</td><td></td><td class="dirt">D1500m</td></tr>
+          <tr><td class="race">2R</td><td class="time">17:45</td><td>C2-10</td><td></td><td class="dirt">D1500m</td></tr>
+          <tr><td class="race">3R</td><td class="time">18:10</td><td>C2-9</td><td></td><td class="dirt">D1500m</td></tr>
+          <tr><td class="race">4R</td><td class="time">18:35</td><td>C2-8</td><td></td><td class="dirt">D1500m</td></tr>
+          <tr><td class="race">5R</td><td class="time">19:00</td><td>C2-7</td><td></td><td class="dirt">D1500m</td></tr>
+          <tr><td class="race">6R</td><td class="time">19:25</td><td>C2-6</td><td></td><td class="dirt">D1500m</td></tr>
+          <tr><td class="race">7R</td><td class="time">19:50</td><td>C2-5</td><td></td><td class="dirt">D1500m</td></tr>
+          <tr><td class="race">8R</td><td class="time">20:15</td><td>C2-4</td><td></td><td class="dirt">D1500m</td></tr>
+          <tr><td class="race">9R</td><td class="time">20:40</td><td>C2-3</td><td></td><td class="dirt">D1500m</td></tr>
+          <tr><td class="race">10R</td><td class="time">21:05</td><td>C2-2</td><td></td><td class="dirt">D1500m</td></tr>
+          <tr><td class="race">11R</td><td class="time">21:30</td><td>C2-1</td><td></td><td class="dirt">D1500m</td></tr>
+          <tr><td class="race">12R</td><td class="time">21:55</td><td>C1-12</td><td></td><td class="dirt">D1800m</td></tr>
+        </table>
+      </div>
+      <div class="track"><h2>Kochi Racecourse - Nov Meeting Sunny/Good Dirt (nar.netkeiba.com)</h2>
+        <table><tr><th>R</th><th>Post</th><th>Race Name</th><th>Grade</th><th>Dist.</th></tr>
+          <tr><td class="race">1R</td><td class="time">16:10</td><td>B3-6 Group</td><td></td><td class="dirt">D1300m</td></tr>
+          <tr><td class="race">2R</td><td class="time">16:35</td><td>B3-5 Group</td><td></td><td class="dirt">D1300m</td></tr>
+          <tr><td class="race">3R</td><td class="time">17:00</td><td>B3-4 Group</td><td></td><td class="dirt">D1300m</td></tr>
+          <tr><td class="race">4R</td><td class="time">17:25</td><td>B3-3 Group</td><td></td><td class="dirt">D1300m</td></tr>
+          <tr><td class="race">5R</td><td class="time">17:50</td><td>B3-2 Group</td><td></td><td class="dirt">D1300m</td></tr>
+          <tr><td class="race">6R</td><td class="time">18:15</td><td>B3-1 Group</td><td></td><td class="dirt">D1300m</td></tr>
+          <tr><td class="race">7R</td><td class="time">18:40</td><td>B2-6 Group</td><td></td><td class="dirt">D1300m</td></tr>
+          <tr><td class="race">8R</td><td class="time">19:05</td><td>B2-5 Group</td><td></td><td class="dirt">D1300m</td></tr>
+          <tr><td class="race">9R</td><td class="time">19:30</td><td>B2-4 Group</td><td></td><td class="dirt">D1300m</td></tr>
+          <tr><td class="race">10R</td><td class="time">19:55</td><td>B2-3 Group</td><td></td><td class="dirt">D1300m</td></tr>
+          <tr><td class="race">11R</td><td class="time">20:20</td><td>B2-2 Group</td><td></td><td class="dirt">D1300m</td></tr>
+          <tr><td class="race">12R</td><td class="time">20:45</td><td>A1</td><td class="op">OP</td><td class="dirt">D1400m</td></tr>
+        </table>
+      </div>
+      <div class="track"><h2>Saga Racecourse - Nov Meeting Sunny/Good Dirt (nar.netkeiba.com)</h2>
+        <table><tr><th>R</th><th>Post</th><th>Race Name</th><th>Grade</th><th>Dist.</th></tr>
+          <tr><td class="race">1R</td><td class="time">15:15</td><td>3YO C2-1</td><td></td><td class="dirt">D1000m</td></tr>
+          <tr><td class="race">2R</td><td class="time">15:40</td><td>3YO C2-2</td><td></td><td class="dirt">D1000m</td></tr>
+          <tr><td class="race">3R</td><td class="time">16:05</td><td>3YO C2-3</td><td></td><td class="dirt">D1000m</td></tr>
+          <tr><td class="race">4R</td><td class="time">16:30</td><td>3YO C1-4</td><td></td><td class="dirt">D1000m</td></tr>
+          <tr><td class="race">5R</td><td class="time">16:55</td><td>2YO Newcomers</td><td></td><td class="dirt">D800m</td></tr>
+          <tr><td class="race">6R</td><td class="time">17:20</td><td>2YO Allowance-5</td><td></td><td class="dirt">D1000m</td></tr>
+          <tr><td class="race">7R</td><td class="time">17:45</td><td>3YO+ B3-6</td><td></td><td class="dirt">D1200m</td></tr>
+          <tr><td class="race">8R</td><td class="time">18:10</td><td>3YO+ B2-7</td><td></td><td class="dirt">D1200m</td></tr>
+          <tr><td class="race">9R</td><td class="time">18:35</td><td>3YO+ B1-8</td><td></td><td class="dirt">D1200m</td></tr>
+          <tr><td class="race">10R</td><td class="time">19:00</td><td>3YO+ A3-9</td><td></td><td class="dirt">D1200m</td></tr>
+          <tr><td class="race">11R</td><td class="time">19:25</td><td>3YO+ A2-10</td><td></td><td class="dirt">D1200m</td></tr>
+          <tr><td class="race">12R</td><td class="time">19:50</td><td>2YO S</td><td class="g3">JpnIII</td><td class="dirt">D1200m</td></tr>
+        </table>
+      </div>
+    </div>
+    <!-- TH NAR (Translated text stored here) -->
+    <div id="nar-th" class="lang-content">
+      <div class="track"><h2>สนามโอเรฮิโร - การแข่งเดือนพฤศจิกายน แดดออก/ดินดี (nar.netkeiba.com)</h2>
+        <table><tr><th>R</th><th>เวลาเริ่ม</th><th>ชื่อการแข่ง</th><th>เกรด</th><th>ระยะทาง</th></tr>
+          <tr><td class="race">1R</td><td class="time">12:30</td><td>3ปี C4 กลุ่ม 1</td><td></td><td class="dirt">ดิน1500ม</td></tr>
+          <tr><td class="race">2R</td><td class="time">13:00</td><td>3ปี C3 กลุ่ม 2</td><td></td><td class="dirt">ดิน1700ม</td></tr>
+          <tr><td class="race">3R</td><td class="time">13:30</td><td>3ปี C2 กลุ่ม 3</td><td></td><td class="dirt">ดิน1300ม</td></tr>
+          <tr><td class="race">4R</td><td class="time">14:00</td><td>3ปี C1 กลุ่ม 4</td><td></td><td class="dirt">ดิน1500ม</td></tr>
+          <tr><td class="race">5R</td><td class="time">14:30</td><td>2ปี ม้าแรกเริ่ม</td><td></td><td class="dirt">ดิน1000ม</td></tr>
+          <tr><td class="race">6R</td><td class="time">15:00</td><td>2ปี ม้าใหม่ กลุ่ม 5</td><td></td><td class="dirt">ดิน1300ม</td></tr>
+          <tr><td class="race">7R</td><td class="time">15:30</td><td>3ปี+ B3 กลุ่ม 6</td><td></td><td class="dirt">ดิน1700ม</td></tr>
+          <tr><td class="race">8R</td><td class="time">16:00</td><td>3ปี+ B2 กลุ่ม 7</td><td></td><td class="dirt">ดิน1500ม</td></tr>
+          <tr><td class="race">9R</td><td class="time">16:30</td><td>3ปี+ B1 กลุ่ม 8</td><td></td><td class="dirt">ดิน1300ม</td></tr>
+          <tr><td class="race">10R</td><td class="time">17:00</td><td>3ปี+ A3 กลุ่ม 9</td><td></td><td class="dirt">ดิน1700ม</td></tr>
+          <tr><td class="race">11R</td><td class="time">17:30</td><td>3ปี+ A2 กลุ่ม 10</td><td></td><td class="dirt">ดิน1500ม</td></tr>
+          <tr><td class="race">12R</td><td class="time">18:00</td><td>3ปี+ A1 Special</td><td class="op">OP</td><td class="dirt">ดิน1600ม</td></tr>
+        </table>
+      </div>
+      <div class="track"><h2>สนามมิซุซาวะ - การแข่งเดือนพฤศจิกายน แดดออก/ดินดี (nar.netkeiba.com)</h2>
+        <table><tr><th>R</th><th>เวลาเริ่ม</th><th>ชื่อการแข่ง</th><th>เกรด</th><th>ระยะทาง</th></tr>
+          <tr><td class="race">1R</td><td class="time">17:20</td><td>C2-11</td><td></td><td class="dirt">ดิน1500ม</td></tr>
+          <tr><td class="race">2R</td><td class="time">17:45</td><td>C2-10</td><td></td><td class="dirt">ดิน1500ม</td></tr>
+          <tr><td class="race">3R</td><td class="time">18:10</td><td>C2-9</td><td></td><td class="dirt">ดิน1500ม</td></tr>
+          <tr><td class="race">4R</td><td class="time">18:35</td><td>C2-8</td><td></td><td class="dirt">ดิน1500ม</td></tr>
+          <tr><td class="race">5R</td><td class="time">19:00</td><td>C2-7</td><td></td><td class="dirt">ดิน1500ม</td></tr>
+          <tr><td class="race">6R</td><td class="time">19:25</td><td>C2-6</td><td></td><td class="dirt">ดิน1500ม</td></tr>
+          <tr><td class="race">7R</td><td class="time">19:50</td><td>C2-5</td><td></td><td class="dirt">ดิน1500ม</td></tr>
+          <tr><td class="race">8R</td><td class="time">20:15</td><td>C2-4</td><td></td><td class="dirt">ดิน1500ม</td></tr>
+          <tr><td class="race">9R</td><td class="time">20:40</td><td>C2-3</td><td></td><td class="dirt">ดิน1500ม</td></tr>
+          <tr><td class="race">10R</td><td class="time">21:05</td><td>C2-2</td><td></td><td class="dirt">ดิน1500ม</td></tr>
+          <tr><td class="race">11R</td><td class="time">21:30</td><td>C2-1</td><td></td><td class="dirt">ดิน1500ม</td></tr>
+          <tr><td class="race">12R</td><td class="time">21:55</td><td>C1-12</td><td></td><td class="dirt">ดิน1800ม</td></tr>
+        </table>
+      </div>
+      <div class="track"><h2>สนามโคจิ - การแข่งเดือนพฤศจิกายน แดดออก/ดินดี (nar.netkeiba.com)</h2>
+        <table><tr><th>R</th><th>เวลาเริ่ม</th><th>ชื่อการแข่ง</th><th>เกรด</th><th>ระยะทาง</th></tr>
+          <tr><td class="race">1R</td><td class="time">16:10</td><td>B3-6 กลุ่ม</td><td></td><td class="dirt">ดิน1300ม</td></tr>
+          <tr><td class="race">2R</td><td class="time">16:35</td><td>B3-5 กลุ่ม</td><td></td><td class="dirt">ดิน1300ม</td></tr>
+          <tr><td class="race">3R</td><td class="time">17:00</td><td>B3-4 กลุ่ม</td><td></td><td class="dirt">ดิน1300ม</td></tr>
+          <tr><td class="race">4R</td><td class="time">17:25</td><td>B3-3 กลุ่ม</td><td></td><td class="dirt">ดิน1300ม</td></tr>
+          <tr><td class="race">5R</td><td class="time">17:50</td><td>B3-2 กลุ่ม</td><td></td><td class="dirt">ดิน1300ม</td></tr>
+          <tr><td class="race">6R</td><td class="time">18:15</td><td>B3-1 กลุ่ม</td><td></td><td class="dirt">ดิน1300ม</td></tr>
+          <tr><td class="race">7R</td><td class="time">18:40</td><td>B2-6 กลุ่ม</td><td></td><td class="dirt">ดิน1300ม</td></tr>
+          <tr><td class="race">8R</td><td class="time">19:05</td><td>B2-5 กลุ่ม</td><td></td><td class="dirt">ดิน1300ม</td></tr>
+          <tr><td class="race">9R</td><td class="time">19:30</td><td>B2-4 กลุ่ม</td><td></td><td class="dirt">ดิน1300ม</td></tr>
+          <tr><td class="race">10R</td><td class="time">19:55</td><td>B2-3 กลุ่ม</td><td></td><td class="dirt">ดิน1300ม</td></tr>
+          <tr><td class="race">11R</td><td class="time">20:20</td><td>B2-2 กลุ่ม</td><td></td><td class="dirt">ดิน1300ม</td></tr>
+          <tr><td class="race">12R</td><td class="time">20:45</td><td>A1</td><td class="op">OP</td><td class="dirt">ดิน1400ม</td></tr>
+        </table>
+      </div>
+      <div class="track"><h2>สนามซากะ - การแข่งเดือนพฤศจิกายน แดดออก/ดินดี (nar.netkeiba.com)</h2>
+        <table><tr><th>R</th><th>เวลาเริ่ม</th><th>ชื่อการแข่ง</th><th>เกรด</th><th>ระยะทาง</th></tr>
+          <tr><td class="race">1R</td><td class="time">15:15</td><td>3ปี C2-1</td><td></td><td class="dirt">ดิน1000ม</td></tr>
+          <tr><td class="race">2R</td><td class="time">15:40</td><td>3ปี C2-2</td><td></td><td class="dirt">ดิน1000ม</td></tr>
+          <tr><td class="race">3R</td><td class="time">16:05</td><td>3ปี C2-3</td><td></td><td class="dirt">ดิน1000ม</td></tr>
+          <tr><td class="race">4R</td><td class="time">16:30</td><td>3ปี C1-4</td><td></td><td class="dirt">ดิน1000ม</td></tr>
+          <tr><td class="race">5R</td><td class="time">16:55</td><td>2ปี ม้าแรกเริ่ม</td><td></td><td class="dirt">ดิน800ม</td></tr>
+          <tr><td class="race">6R</td><td class="time">17:20</td><td>2ปี ม้าใหม่-5</td><td></td><td class="dirt">ดิน1000ม</td></tr>
+          <tr><td class="race">7R</td><td class="time">17:45</td><td>3ปี+ B3-6</td><td></td><td class="dirt">ดิน1200ม</td></tr>
+          <tr><td class="race">8R</td><td class="time">18:10</td><td>3ปี+ B2-7</td><td></td><td class="dirt">ดิน1200ม</td></tr>
+          <tr><td class="race">9R</td><td class="time">18:35</td><td>3ปี+ B1-8</td><td></td><td class="dirt">ดิน1200ม</td></tr>
+          <tr><td class="race">10R</td><td class="time">19:00</td><td>3ปี+ A3-9</td><td></td><td class="dirt">ดิน1200ม</td></tr>
+          <tr><td class="race">11R</td><td class="time">19:25</td><td>3ปี+ A2-10</td><td></td><td class="dirt">ดิน1200ม</td></tr>
+          <tr><td class="race">12R</td><td class="time">19:50</td><td>2ปี S</td><td class="g3">JpnIII</td><td class="dirt">ดิน1200ม</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
-            // --- NAR RACE NAME MAPPING (Generic/Common classes) ---
-            "C1": "RACE_CLASS_C1",
-            "C2": "RACE_CLASS_C2",
-            "C3": "RACE_CLASS_C3",
-            "C1-7": "RACE_CLASS_C1_7",
-            "C1-6": "RACE_CLASS_C1_6",
-            "C1-5": "RACE_CLASS_C1_5",
-            "C1-4": "RACE_CLASS_C1_4",
-            "C3-3": "RACE_CLASS_C3_3",
-            "C3-2": "RACE_CLASS_C3_2",
-            "B": "RACE_CLASS_B",
-            "B1-3": "RACE_CLASS_B1_3",
-            "A2": "RACE_CLASS_A2",
-            "2歳": "RACE_2YO_ONLY",
-            "2歳-3": "RACE_2YO_3",
-            "2歳-2": "RACE_2YO_2",
-            "2歳新馬": "RACE_2YO_NEW", // Re-used JRA key for 2-year-old races
-            "ファイナルレース(C3)": "RACE_FINAL_C3"
-        };
+<script>
+let currentMainTab = 'jra';
+let currentLang = {jra: 'jp', nar: 'jp'};
 
-        const translations = {
-            ja: {
-                title: "🇯🇵 本日の競馬番組表",
-                tokyo: "東京", kyoto: "京都", obihiro: "帯広", mizusawa: "水沢", kochi: "高知", saga: "佐賀",
-                jra_track_name: (name) => name,
-                jra_r: "R", jra_time: "発走時間", jra_name: "レース名", jra_distance: "距離", jra_horses: "頭数",
-                jra_status: (date, weather) => `${date} | ${weather}`,
-                
-                // JRA Standard
-                RACE_2YO_UNBEATEN: "2歳未勝利", RACE_2YO_NEW: "2歳新馬", RACE_3YO_PLUS_1WIN: "3歳以上1勝クラス",
-                RACE_3YO_PLUS_HANDICAP_UNBEATEN: "3歳以上障害未勝利", RACE_3YO_PLUS_2WIN: "3歳以上2勝クラス",
-                RACE_BEGONIA_STAKES: "ベゴニア賞", RACE_ORIENTAL_STAKES: "オリエンタル賞 (2勝)",
-                RACE_APPLAUSE_STAKES: "アプローズ賞 (2勝)", RACE_WELCOME_STAKES: "ウェルカムS (3勝)",
-                RACE_JAPAN_CUP: "ジャパンC (GI) / WIN5", RACE_SHIRAGIKU_STAKES: "白菊賞 (1勝)",
-                RACE_HANAZONO_STAKES: "花園S (3勝)", RACE_ALEAF_STAKES: "AリーフS (OP) / WIN5",
-                RACE_KEIHAN_HAI: "京阪杯 (GIII) / WIN5",
-                
-                // NAR Standard
-                RACE_CLASS_C1: "C1クラス", RACE_CLASS_C2: "C2クラス", RACE_CLASS_C3: "C3クラス",
-                RACE_CLASS_C1_7: "C1-7組", RACE_CLASS_C1_6: "C1-6組", RACE_CLASS_C1_5: "C1-5組",
-                RACE_CLASS_C1_4: "C1-4組", RACE_CLASS_C3_3: "C3-3組", RACE_CLASS_C3_2: "C3-2組",
-                RACE_CLASS_B: "Bクラス", RACE_CLASS_B1_3: "B1-3組", RACE_CLASS_A2: "A2クラス",
-                RACE_2YO_ONLY: "2歳", RACE_2YO_3: "2歳-3", RACE_2YO_2: "2歳-2",
-                RACE_FINAL_C3: "ファイナルレース(C3)",
+function openMainTab(evt, tab) {
+  document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+  document.getElementById(tab).classList.add('active');
+  document.querySelectorAll('.main-tab-btn').forEach(b => b.classList.remove('active'));
+  evt.currentTarget.classList.add('active');
+  currentMainTab = tab;
+  document.getElementById('jra-lang-tabs').style.display = tab === 'jra' ? 'flex' : 'none';
+  document.getElementById('nar-lang-tabs').style.display = tab === 'nar' ? 'flex' : 'none';
+  setLang(evt, currentLang[tab], tab);
+}
 
-                SPECIAL_HEAVY: "重賞", SPECIAL_SPECIAL: "特別",
-            },
-            en: {
-                title: "🇯🇵 Today's Horse Racing Schedule",
-                tokyo: "Tokyo", kyoto: "Kyoto", obihiro: "Obihiro", mizusawa: "Mizusawa", kochi: "Kochi", saga: "Saga",
-                jra_track_name: (name) => name.replace("競馬場", " Racecourse"),
-                jra_r: "R", jra_time: "Start Time", jra_name: "Race Name", jra_distance: "Distance", jra_horses: "Runners",
-                jra_status: (date, weather) => `${date.replace('回', 'th Round')} | ${weather.replace('天気: ', 'Weather: ').replace('馬場: ', 'Track: ').replace('良', 'Good')}`,
-                
-                // JRA Standard
-                RACE_2YO_UNBEATEN: "2yo Unbeaten", RACE_2YO_NEW: "2yo Newcomer", RACE_3YO_PLUS_1WIN: "3yo+ 1 Win Class",
-                RACE_3YO_PLUS_HANDICAP_UNBEATEN: "3yo+ Steeplechase Unbeaten", RACE_3YO_PLUS_2WIN: "3yo+ 2 Win Class",
-                RACE_BEGONIA_STAKES: "Begonia Stakes", RACE_ORIENTAL_STAKES: "Oriental Stakes (2 Win)",
-                RACE_APPLAUSE_STAKES: "Applause Stakes (2 Win)", RACE_WELCOME_STAKES: "Welcome S (3 Win)",
-                RACE_JAPAN_CUP: "Japan Cup (GI) / WIN5", RACE_SHIRAGIKU_STAKES: "Shiragiku Stakes (1 Win)",
-                RACE_HANAZONO_STAKES: "Hanazono S (3 Win)", RACE_ALEAF_STAKES: "A-Leaf S (OP) / WIN5",
-                RACE_KEIHAN_HAI: "Keihan Hai (GIII) / WIN5",
+function setLang(evt, lang, mainTab) {
+  const contentId = mainTab + '-' + lang;
+  document.querySelectorAll('#' + mainTab + ' .lang-content').forEach(c => c.classList.remove('active'));
+  document.getElementById(contentId).classList.add('active');
+  document.querySelectorAll('#' + mainTab + '-lang-tabs .lang-btn').forEach(b => b.classList.remove('active'));
+  evt.currentTarget.classList.add('active');
+  currentLang[mainTab] = lang;
 
-                // NAR Standard
-                RACE_CLASS_C1: "Class C1", RACE_CLASS_C2: "Class C2", RACE_CLASS_C3: "Class C3",
-                RACE_CLASS_C1_7: "Class C1-7", RACE_CLASS_C1_6: "Class C1-6", RACE_CLASS_C1_5: "Class C1-5",
-                RACE_CLASS_C1_4: "Class C1-4", RACE_CLASS_C3_3: "Class C3-3", RACE_CLASS_C3_2: "Class C3-2",
-                RACE_CLASS_B: "Class B", RACE_CLASS_B1_3: "Class B1-3", RACE_CLASS_A2: "Class A2",
-                RACE_2YO_ONLY: "2yo Race", RACE_2YO_3: "2yo-3", RACE_2YO_2: "2yo-2",
-                RACE_FINAL_C3: "Final Race (C3)",
-                
-                SPECIAL_HEAVY: "Grade Race", SPECIAL_SPECIAL: "Special Race",
-            },
-            th: {
-                title: "🇯🇵 ตารางการแข่งขันม้าวันนี้",
-                tokyo: "โตเกียว", kyoto: "เกียวโต", obihiro: "โอิบิฮิโระ", mizusawa: "มิซึซาวะ", kochi: "โคจิ", saga: "ซากะ",
-                jra_track_name: (name) => name.replace("競馬場", " สนามแข่งม้า"),
-                jra_r: "รอบ", jra_time: "เวลาออกวิ่ง", jra_name: "ชื่อการแข่งขัน", jra_distance: "ระยะทาง", jra_horses: "จำนวนม้า",
-                jra_status: (date, weather) => `${date.replace('回', 'รอบที่')} | ${weather.replace('天気: ', 'สภาพอากาศ: ').replace('馬場: ', 'สภาพสนาม: ')}`,
-                
-                // JRA Standard
-                RACE_2YO_UNBEATEN: "ม้า 2 ปี ไม่เคยชนะ", RACE_2YO_NEW: "ม้า 2 ปี ม้าใหม่", RACE_3YO_PLUS_1WIN: "ม้า 3 ปี ขึ้นไป คลาส 1 ชนะ",
-                RACE_3YO_PLUS_HANDICAP_UNBEATEN: "ม้า 3 ปี ขึ้นไป แข่งวิบาก ไม่เคยชนะ", RACE_3YO_PLUS_2WIN: "ม้า 3 ปี ขึ้นไป คลาส 2 ชนะ",
-                RACE_BEGONIA_STAKES: "เบโกเนีย สเตคส์", RACE_ORIENTAL_STAKES: "โอเรียนทัล สเตคส์ (2 ชนะ)",
-                RACE_APPLAUSE_STAKES: "แอปพลอส สเตคส์ (2 ชนะ)", RACE_WELCOME_STAKES: "เวลคัม สเตคส์ (3 ชนะ)",
-                RACE_JAPAN_CUP: "เจแปน คัพ (GI) / WIN5", RACE_SHIRAGIKU_STAKES: "ชิรากิกุ สเตคส์ (1 ชนะ)",
-                RACE_HANAZONO_STAKES: "ฮานาโซโนะ สเตคส์ (3 ชนะ)", RACE_ALEAF_STAKES: "เอ-ลีฟ สเตคส์ (OP) / WIN5",
-                RACE_KEIHAN_HAI: "เคฮัน ไฮ (GIII) / WIN5",
+  // Update title
+  const titles = {
+    jp: "2025年11月30日 競馬発走表 (netkeiba.com)",
+    en: "Horse Racing Schedule - Nov 30, 2025 (netkeiba.com)",
+    th: "ตารางแข่งม้า - 30 พ.ย. 2025 (netkeiba.com)"
+  };
+  document.getElementById('main-title').textContent = titles[lang];
+}
+</script>
 
-                // NAR Standard
-                RACE_CLASS_C1: "คลาส C1", RACE_CLASS_C2: "คลาส C2", RACE_CLASS_C3: "คลาส C3",
-                RACE_CLASS_C1_7: "คลาส C1-7", RACE_CLASS_C1_6: "คลาส C1-6", RACE_CLASS_C1_5: "คลาส C1-5",
-                RACE_CLASS_C1_4: "คลาส C1-4", RACE_CLASS_C3_3: "คลาส C3-3", RACE_CLASS_C3_2: "คลาส C3-2",
-                RACE_CLASS_B: "คลาส B", RACE_CLASS_B1_3: "คลาส B1-3", RACE_CLASS_A2: "คลาส A2",
-                RACE_2YO_ONLY: "การแข่งม้า 2 ปี", RACE_2YO_3: "ม้า 2 ปี-3", RACE_2YO_2: "ม้า 2 ปี-2",
-                RACE_FINAL_C3: "การแข่งรอบสุดท้าย (C3)",
-                
-                SPECIAL_HEAVY: "การแข่งเกรด", SPECIAL_SPECIAL: "พิเศษ",
-            },
-        };
+<footer>データソース: netkeiba.com & nar.netkeiba.com | 言語: JP/EN/TH | 2025/11/30 | Default: 日本語 | ライブ更新はnetkeibaアプリで！</footer>
 
-        // --- CORE DATA STRUCTURES ---
-        const raceData = {
-            // --- JRA DATA (TOKYO) ---
-            tokyo: {
-                name: "東京競馬場", date: "5回東京 8日目", weather: "天気: 晴(C) | 馬場: 良", type: "JRA",
-                races: [
-                    { R: 1, time: "09:30", name: "2歳未勝利", distance: "ダ1400m", horses: 16 },
-                    { R: 2, time: "09:55", name: "2歳未勝利", distance: "芝1600m", horses: 13 },
-                    { R: 3, time: "10:25", name: "2歳未勝利", distance: "ダ1600m", horses: 16 },
-                    { R: 4, time: "10:55", name: "2歳未勝利", distance: "芝2000m", horses: 13 },
-                    { R: 5, time: "11:25", name: "2歳新馬", distance: "ダ1600m", horses: 16 },
-                    { R: 6, time: "12:15", name: "2歳新馬", distance: "芝1800m", horses: 12 },
-                    { R: 7, time: "12:45", name: "3歳以上1勝クラス", distance: "ダ1400m", horses: 16 },
-                    { R: 8, time: "13:15", name: "ベゴニア賞", distance: "芝1600m", horses: 8, special: true },
-                    { R: 9, time: "13:50", name: "オリエンタル賞 (2勝)", distance: "芝2000m", horses: 9, special: true },
-                    { R: 10, time: "14:25", name: "アプローズ賞 (2勝)", distance: "ダ1400m", horses: 16, special: true },
-                    { R: 11, time: "15:00", name: "ウェルカムS (3勝)", distance: "芝2000m", horses: 16, special: true },
-                    { R: 12, time: "15:40", name: "ジャパンC (GI) / WIN5", distance: "芝2400m", horses: 18, special: true, heavy: true, win5: true },
-                ]
-            },
-            // --- JRA DATA (KYOTO) ---
-            kyoto: {
-                name: "京都競馬場", date: "4回京都 8日目", weather: "天気: 晴 | 馬場: 良", type: "JRA",
-                races: [
-                    { R: 1, time: "09:40", name: "2歳未勝利", distance: "ダ1200m", horses: 16 },
-                    { R: 2, time: "10:10", name: "2歳未勝利", distance: "芝1800m", horses: 13 },
-                    { R: 3, time: "10:40", name: "2歳新馬", distance: "芝1200m", horses: 13 },
-                    { R: 4, time: "11:10", name: "3歳以上1勝クラス", distance: "ダ1400m", horses: 16 },
-                    { R: 5, time: "11:40", name: "3歳以上障害未勝利", distance: "障2910m", horses: 9 },
-                    { R: 6, time: "12:30", name: "2歳新馬", distance: "芝2000m", horses: 9 },
-                    { R: 7, time: "13:00", name: "3歳以上1勝クラス", distance: "ダ1800m", horses: 16 },
-                    { R: 8, time: "13:30", name: "3歳以上2勝クラス", distance: "芝2200m", horses: 8, special: true },
-                    { R: 9, time: "14:05", name: "白菊賞 (1勝)", distance: "芝1600m", horses: 11, special: true },
-                    { R: 10, time: "14:40", name: "花園S (3勝)", distance: "ダート1800m", horses: 16, special: true },
-                    { R: 11, time: "15:15", name: "AリーフS (OP) / WIN5", distance: "ダ1400m", horses: 16, special: true, win5: true },
-                    { R: 12, time: "16:15", name: "京阪杯 (GIII) / WIN5", distance: "芝1200m", horses: 18, special: true, heavy: true, win5: true },
-                ]
-            },
-            // --- NAR DATA (OBIHIRO - Banei) ---
-            obihiro: {
-                name: "帯広競馬場", date: "17回帯広(ば) 5日目", weather: "芝: - ダ: -", type: "NAR", icon: "🏇",
-                races: [
-                    { R: 1, time: "14:00", name: "第5回今年も観戦出走", distance: "ダ200m", horses: 10 },
-                    { R: 2, time: "14:35", name: "リベンジ☆みくるスズ(2歳)", distance: "ダ200m", horses: 10 },
-                    { R: 3, time: "15:05", name: "スウィート十勝盃(2歳)", distance: "ダ200m", horses: 10 },
-                    { R: 4, time: "15:35", name: "祝56しげひら誕生生(2歳)", distance: "ダ200m", horses: 10 },
-                    { R: 5, time: "16:10", name: "折原軍斗☆爆誕杯", distance: "ダ200m", horses: 9 },
-                    { R: 6, time: "16:45", name: "国鉄広尾線96周年", distance: "ダ200m", horses: 9 },
-                    { R: 7, time: "17:25", name: "国鉄士幌線100周", distance: "ダ200m", horses: 9 },
-                    { R: 8, time: "17:55", name: "根室駅帯広駅120(2歳)", distance: "ダ200m", horses: 9 },
-                    { R: 9, time: "18:30", name: "千秋ありがとう", distance: "ダ200m", horses: 9 },
-                    { R: 10, time: "19:00", name: "釧路産特別 (2歳)", distance: "ダ200m", horses: 10, special: true },
-                    { R: 11, time: "19:30", name: "ばんえいオークス (3歳)", distance: "ダ200m", horses: 10, special: true, heavy: true },
-                    { R: 12, time: "20:05", name: "B1-3", distance: "ダ200m", horses: 9 },
-                ]
-            },
-            // --- NAR DATA (MIZUSAWA) ---
-            mizusawa: {
-                name: "水沢競馬場", date: "7回水沢 4日目", weather: "芝: - ダ: -", type: "NAR", icon: "💧",
-                races: [
-                    { R: 1, time: "11:50", name: "C2", distance: "ダ850m", horses: 9 },
-                    { R: 2, time: "12:25", name: "C2十組", distance: "ダ1300m", horses: 10 },
-                    { R: 3, time: "13:05", name: "C2九組", distance: "ダ1300m", horses: 10 },
-                    { R: 4, time: "13:40", name: "C2八組", distance: "ダ1300m", horses: 10 },
-                    { R: 5, time: "14:15", name: "2歳", distance: "ダ1300m", horses: 9 },
-                    { R: 6, time: "14:50", name: "2歳", distance: "ダ1300m", horses: 10 },
-                    { R: 7, time: "15:25", name: "C1", distance: "ダ850m", horses: 9 },
-                    { R: 8, time: "15:55", name: "C1", distance: "ダ850m", horses: 10 },
-                    { R: 9, time: "16:30", name: "C1", distance: "ダ1400m", horses: 12 },
-                    { R: 10, time: "17:05", name: "山王岩賞(C1)", distance: "ダ1600m", horses: 11, special: true },
-                    { R: 11, time: "17:40", name: "社台スタリオンステ(C1)", distance: "ダ1600m", horses: 12, special: true },
-                    { R: 12, time: "18:15", name: "北上川大賞典", distance: "ダ2500m", horses: 8, special: true, heavy: true },
-                ]
-            },
-            // --- NAR DATA (KOCHI) ---
-            kochi: {
-                name: "高知競馬場", date: "11回高知 2日目", weather: "芝: - ダ: -", type: "NAR", icon: "🔥",
-                races: [
-                    { R: 1, time: "14:55", name: "2歳-3", distance: "ダ1300m", horses: 9 },
-                    { R: 2, time: "15:30", name: "2歳-2", distance: "ダ1300m", horses: 9 },
-                    { R: 3, time: "16:00", name: "C1-7", distance: "ダ1600m", horses: 10 },
-                    { R: 4, time: "16:35", name: "広島もみじ特別(C1)", distance: "ダ1600m", horses: 9, special: true },
-                    { R: 5, time: "17:05", name: "やまぐち和牛振興特別(C1)", distance: "ダ1600m", horses: 11, special: true },
-                    { R: 6, time: "17:35", name: "C1-6", distance: "ダ1600m", horses: 10 },
-                    { R: 7, time: "18:10", name: "C1-5", distance: "ダ1600m", horses: 11 },
-                    { R: 8, time: "18:45", name: "C1-4", distance: "ダ1600m", horses: 10 },
-                    { R: 9, time: "19:20", name: "C3-3", distance: "ダ1400m", horses: 11 },
-                    { R: 10, time: "19:50", name: "C3-2", distance: "ダ1400m", horses: 12 },
-                    { R: 11, time: "20:20", name: "タマムラサキ特別(C3)", distance: "ダ1400m", horses: 8, special: true },
-                    { R: 12, time: "20:50", name: "ファイナルレース(C3)", distance: "ダ1400m", horses: 8, special: true },
-                ]
-            },
-            // --- NAR DATA (SAGA) ---
-            saga: {
-                name: "佐賀競馬場", date: "15回佐賀 4日目", weather: "芝: - ダ: -", type: "NAR", icon: "🌾",
-                races: [
-                    { R: 1, time: "15:50", name: "ウマ娘×ゾンビラン(2歳)", distance: "ダ1300m", horses: 12 },
-                    { R: 2, time: "16:25", name: "なんてったってソン(2歳)", distance: "ダ1300m", horses: 9 },
-                    { R: 3, time: "16:55", name: "都一番の花魁ねー(C1)", distance: "ダ1400m", horses: 10 },
-                    { R: 4, time: "17:30", name: "KYUSHU DR(C1)", distance: "ダ1400m", horses: 10 },
-                    { R: 5, time: "18:05", name: "フォーマルハウト賞", distance: "ダ1400m", horses: 12, special: true, heavy: true },
-                    { R: 6, time: "18:40", name: "覇王のGlory!(B)", distance: "ダ1400m", horses: 11 },
-                    { R: 7, time: "19:10", name: "叫べ勝利の雄たけび(B)", distance: "ダ1400m", horses: 10 },
-                    { R: 8, time: "19:40", name: "力、それこそが勝利!(A2)", distance: "ダ1400m", horses: 10 },
-                    { R: 9, time: "20:10", name: "アンドロメダ座特選(C2)", distance: "ダ900m", horses: 10, special: true },
-                    { R: 10, time: "20:40", name: "SAGAリベンジャ(C2)", distance: "ダ1400m", horses: 12, special: true },
-                    // Saga only has 10 races on this specific schedule, but keeping R11/R12 structure for consistency if a new schedule is loaded later.
-                ]
-            },
-        };
-
-        const tracks = raceData;
-
-        // --- GLOBAL STATE & DOM ELEMENTS ---
-        let currentLang = 'ja';
-        let currentTrackKey = 'tokyo';
-
-        const header = document.getElementById('schedule-header');
-        const tableBody = document.getElementById('schedule-body');
-        const tableHeaderRow = document.getElementById('table-header-row');
-        const tabButtons = document.querySelectorAll('.tab-button');
-        const langButtons = document.querySelectorAll('.lang-button');
-        const mainTitle = document.getElementById('main-title');
-
-
-        /**
-         * Standardize JRA/NAR race names to translation keys.
-         * This runs once at startup.
-         */
-        function preprocessRaceData() {
-            Object.values(raceData).forEach(track => {
-                track.races = track.races.map(race => ({
-                    ...race,
-                    // Check if the name is a mappable key, otherwise use the original name
-                    translationKey: raceNameMap[race.name] || race.name,
-                }));
-            });
-        }
-
-        preprocessRaceData(); // Run preprocess once on load
-
-
-        /**
-         * Updates all static text elements in the UI based on the selected language.
-         */
-        function updateTextElements(lang) {
-            const t = translations[lang];
-
-            // 1. Main Title
-            mainTitle.textContent = t.title;
-
-            // 2. Tab Buttons
-            document.getElementById('tab-tokyo').textContent = t.tokyo;
-            document.getElementById('tab-kyoto').textContent = t.kyoto;
-            document.getElementById('tab-obihiro').textContent = t.obihiro;
-            document.getElementById('tab-mizusawa').textContent = t.mizusawa;
-            document.getElementById('tab-kochi').textContent = t.kochi;
-            document.getElementById('tab-saga').textContent = t.saga;
-        }
-
-
-        /**
-         * Renders the schedule table based on the selected track key and current language.
-         * All tracks (JRA and NAR) now use the detailed race card format.
-         * @param {string} trackKey - e.g., 'tokyo', 'kochi', 'obihiro'.
-         */
-        function renderSchedule(trackKey) {
-            const data = tracks[trackKey];
-            const t = translations[currentLang];
-
-            if (!data) return;
-
-            // 1. Update the overall header
-            header.innerHTML = `
-                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center">
-                    <span class="text-xl font-semibold text-gray-800">${t.jra_track_name(data.name)}</span>
-                    <span class="text-base text-gray-500 mt-1 sm:mt-0">${t.jra_status(data.date, data.weather)}</span>
-                </div>
-            `;
-
-
-            // 2. Generate Table Header (Unified for JRA/NAR)
-            const headerHtml = `
-                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/12">${t.jra_r}</th>
-                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-2/12">${t.jra_time}</th>
-                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-5/12">${t.jra_name}</th>
-                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-2/12">${t.jra_distance}</th>
-                <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-2/12">${t.jra_horses}</th>
-            `;
-            tableHeaderRow.innerHTML = headerHtml;
-
-            // 3. Generate Table Body (Unified for JRA/NAR)
-            let bodyHtml = '';
-            
-            data.races.forEach(race => {
-                // Skip empty placeholders
-                if (!race.name && !race.horses) return;
-
-                const timeClass = race.special ? 'special-race' : 'race-time';
-                const nameClass = race.special ? 'font-semibold text-red-800' : 'text-gray-900';
-                
-                // Determine badge type
-                let badgeContent = '';
-                let badgeColor = '';
-                if (race.heavy) {
-                    badgeContent = t.SPECIAL_HEAVY;
-                    badgeColor = 'bg-red-500';
-                } else if (race.special) {
-                    badgeContent = t.SPECIAL_SPECIAL;
-                    badgeColor = 'bg-yellow-500';
-                } else if (race.win5) {
-                    badgeContent = 'WIN5';
-                    badgeColor = 'bg-green-500';
-                }
-
-                const badgeHtml = badgeContent ? 
-                    `<span class="ml-2 text-xs font-bold text-white ${badgeColor} px-1.5 py-0.5 rounded-full">${badgeContent}</span>` : '';
-                
-                // Use translation key if available, otherwise use original name
-                const translatedRaceName = t[race.translationKey] || race.name;
-
-                bodyHtml += `
-                    <tr class="hover:bg-blue-50 transition duration-150 ease-in-out">
-                        <td class="px-3 py-3 whitespace-nowrap text-sm font-medium text-blue-800">${race.R}R</td>
-                        <td class="px-3 py-3 whitespace-nowrap text-sm ${timeClass}">${race.time}</td>
-                        <td class="px-3 py-3 whitespace-nowrap text-sm ${nameClass} flex items-center">
-                            ${translatedRaceName}
-                            ${badgeHtml}
-                        </td>
-                        <td class="px-3 py-3 whitespace-nowrap text-sm text-gray-500">${race.distance}</td>
-                        <td class="px-3 py-3 whitespace-nowrap text-sm text-center text-gray-500">${race.horses > 0 ? race.horses : '-'}</td>
-                    </tr>
-                `;
-            });
-
-            tableBody.innerHTML = bodyHtml;
-        }
-
-        /**
-         * Handles track tab click and updates the UI
-         */
-        function selectTab(trackKey) {
-            currentTrackKey = trackKey;
-
-            // Remove active class from all buttons
-            tabButtons.forEach(btn => {
-                btn.classList.remove('tab-active');
-                btn.classList.add('text-gray-500');
-                btn.classList.add('hover:text-blue-600');
-            });
-
-            // Add active class to the selected button
-            const activeTab = document.querySelector(`[data-track="${trackKey}"]`);
-            if (activeTab) {
-                activeTab.classList.add('tab-active');
-                activeTab.classList.remove('text-gray-500');
-            }
-
-            // Render the schedule with new track and current language
-            renderSchedule(trackKey);
-        }
-
-        /**
-         * Handles language button click and updates the entire UI.
-         */
-        function switchLanguage(lang) {
-            currentLang = lang;
-
-            // Update language button styles
-            langButtons.forEach(btn => {
-                btn.classList.remove('lang-active');
-                btn.classList.remove('text-white');
-                btn.classList.add('text-gray-600');
-            });
-
-            const activeLangButton = document.querySelector(`[data-lang="${lang}"]`);
-            if (activeLangButton) {
-                activeLangButton.classList.add('lang-active');
-                activeLangButton.classList.remove('text-gray-600');
-            }
-
-            // Update all static text elements
-            updateTextElements(lang);
-
-            // Re-render the schedule table with the new language
-            renderSchedule(currentTrackKey);
-        }
-
-        // --- INITIALIZATION ---
-        // Add event listeners to track tab buttons
-        tabButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                const trackKey = e.currentTarget.dataset.track;
-                selectTab(trackKey);
-            });
-        });
-
-        // Add event listeners to language buttons
-        langButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                const lang = e.currentTarget.dataset.lang;
-                switchLanguage(lang);
-            });
-        });
-
-        // Initialize the app: default language to Japanese, default track to Tokyo
-        switchLanguage('ja');
-        selectTab('tokyo');
-    </script>
 </body>
 </html>
