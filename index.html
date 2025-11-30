@@ -6,36 +6,40 @@
   <title>2025年11月30日 競馬発走表</title>
   <style>
     body {font-family:"Hiragino Kaku Gothic ProN","Meiryo",Arial,sans-serif;background:#f8fff8;margin:0;padding:10px;color:#333;}
-    h1 {text-align:center;color:#006400;margin:20px 0;font-size:1.8em;}
-    .tab-container {max-width:1000px;margin:0 auto;}
-    .main-tabs {display:flex;background:#fff;border-radius:8px 8px 0 0;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
-    .main-tab-btn {flex:1;padding:14px;text-align:center;font-weight:bold;cursor:pointer;background:#eee;color:#555;border:none;transition:0.3s;}
-    .main-tab-btn.active {background:#006400;color:white;}
-    .main-tab-btn:hover:not(.active) {background:#90ee90;color:#006400;}
-    .lang-tabs {display:flex;background:#f0f0f0;border-radius:0 0 8px 8px;padding:5px;margin-bottom:10px;}
-    .lang-btn {flex:1;padding:8px;text-align:center;font-size:0.9em;cursor:pointer;background:#ddd;color:#666;border:none;transition:0.3s;border-radius:4px;margin:0 2px;}
+    h1 {text-align:center;color:#006400;margin:20px 0;font-size:1.9em;}
+    .tab-container {max-width:1100px;margin:0 auto;background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.15);}
+    .main-tabs {display:flex;background:#006400;}
+    .main-tab-btn {flex:1;padding:16px;text-align:center;font-weight:bold;cursor:pointer;color:white;border:none;transition:0.3s;}
+    .main-tab-btn.active {background:#004d00;}
+    .main-tab-btn:hover:not(.active) {background:#008000;}
+    .lang-tabs {display:flex;background:#f0f0f0;padding:8px;}
+    .lang-btn {flex:1;padding:10px;text-align:center;font-size:0.95em;cursor:pointer;background:#ddd;color:#333;border:none;transition:0.3s;border-radius:6px;margin:0 4px;font-weight:bold;}
     .lang-btn.active {background:#006400;color:white;}
     .lang-btn:hover:not(.active) {background:#90ee90;color:#006400;}
-    .content {display:none;background:white;padding:20px;border-radius:0 0 12px 12px;box-shadow:0 6px 20px rgba(0,0,0,0.1);}
+    .content {display:none;padding:25px;min-height:70vh;}
     .content.active {display:block;}
-    .track {background:#fff;border-radius:12px;padding:15px;margin:20px 0;box-shadow:0 4px 12px rgba(0,0,0,0.05);}
-    .track h2 {color:#005000;border-bottom:3px solid #90ee90;padding-bottom:8px;margin-bottom:10px;font-size:1.3em;}
+    .lang-content {display:none;}
+    .lang-content.active {display:block;}
+    .track {background:#fff;border-radius:12px;padding:18px;margin:25px 0;box-shadow:0 5px 15px rgba(0,0,0,0.08);}
+    .track h2 {color:#004000;border-bottom:4px solid #90ee90;padding-bottom:10px;margin-bottom:15px;font-size:1.4em;}
     table {width:100%;border-collapse:collapse;margin-top:10px;}
-    th {background:#006400;color:white;padding:10px 6px;font-size:0.95em;text-align:center;}
-    td {padding:10px 6px;border-bottom:1px solid #ddd;text-align:center;}
+    th {background:#006400;color:white;padding:12px 8px;font-size:1em;text-align:center;}
+    td {padding:11px 8px;border-bottom:1px solid #ddd;text-align:center;}
     tr:hover {background:#f8fff8;}
-    .race {font-weight:bold;font-size:1.1em;}
-    .g1 {background:#d4af37;color:#000;font-weight:bold;padding:2px 6px;border-radius:4px;}
-    .g3 {background:#cd7f32;color:white;font-weight:bold;padding:2px 6px;border-radius:4px;}
-    .win5 {background:#ff4500;color:white;font-weight:bold;padding:2px 6px;border-radius:4px;font-size:0.8em;}
-    .turf {color:#008000;}
-    .dirt {color:#8b4513;}
-    .time {font-weight:bold;color:#d00;}
-    footer {text-align:center;margin:40px 0 20px;color:#666;font-size:0.9em;}
+    .race {font-weight:bold;font-size:1.15em;color:#000;}
+    .g1 {background:gold;color:#000;font-weight:bold;padding:4px 10px;border-radius:6px;}
+    .g3 {background:#cd7f32;color:white;font-weight:bold;padding:4px 10px;border-radius:6px;}
+    .win5 {background:#ff4500;color:white;font-weight:bold;padding:3px 8px;border-radius:5px;font-size:0.85em;}
+    .heavy {background:#ff9800;color:white;padding:3px 8px;border-radius:5px;font-size:0.85em;}
+    .turf {color:#006400;font-weight:bold;}
+    .dirt {color:#8B4513;font-weight:bold;}
+    .time {font-weight:bold;color:#d00;font-size:1.15em;}
+    footer {text-align:center;margin:50px 0 30px;color:#555;font-size:0.95em;}
     @media(max-width:768px){
       .main-tabs,.lang-tabs{flex-direction:column;}
-      table{font-size:0.85em;}
+      table{font-size:0.9em;}
       th,td{padding:8px 4px;}
+      h1{font-size:1.5em;}
     }
   </style>
 </head>
@@ -44,32 +48,22 @@
 <h1 id="main-title">2025年11月30日 競馬発走表</h1>
 
 <div class="tab-container">
-  <!-- Main Tabs -->
   <div class="main-tabs">
-    <button class="main-tab-btn active" onclick="openMainTab(event,'jra')">JRA (中央)</button>
-    <button class="main-tab-btn" onclick="openMainTab(event,'nar')">NAR (地方)</button>
+    <button class="main-tab-btn active" onclick="openMainTab('jra')">JRA 中央競馬</button>
+    <button class="main-tab-btn" onclick="openMainTab('nar')">NAR 地方競馬</button>
   </div>
 
-  <!-- Language Tabs JRA -->
-  <div id="jra-lang-tabs" class="lang-tabs">
-    <button class="lang-btn active" onclick="setLang(event,'jp','jra')">日本語</button>
-    <button class="lang-btn" onclick="setLang(event,'en','jra')">English</button>
-    <button class="lang-btn" onclick="setLang(event,'th','jra')">ไทย</button>
-  </div>
-  <!-- Language Tabs NAR -->
-  <div id="nar-lang-tabs" class="lang-tabs" style="display:none;">
-    <button class="lang-btn active" onclick="setLang(event,'jp','nar')">日本語</button>
-    <button class="lang-btn" onclick="setLang(event,'en','nar')">English</button>
-    <button class="lang-btn" onclick="setLang(event,'th','nar')">ไทย</button>
+  <div class="lang-tabs">
+    <button class="lang-btn active" id="btn-jp" onclick="setLanguage('jp')">日本語</button>
+    <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">English</button>
+    <button class="lang-btn" id="btn-th" onclick="setLanguage('th')">ไทย</button>
   </div>
 
   <!-- JRA Content -->
   <div id="jra" class="content active">
-    <!-- 日本語 JRA -->
-    <div id="jra-jp" class="lang-content active">
+    <div id="jra-jp" class="lang-content">
       <div class="track"><h2>5回 東京 8日目　天気：曇　芝(C)：良　ダ：良</h2>
-        <table>
-          <tr><th>R</th><th>発走</th><th>レース名</th><th>格</th><th>距離・馬場</th></tr>
+        <table><tr><th>R</th><th>発走</th><th>レース名</th><th>格</th><th>距離・馬場</th></tr>
           <tr><td class="race">1R</td><td class="time">09:31</td><td>2歳未勝利</td><td></td><td class="dirt">ダ1400m 16頭</td></tr>
           <tr><td class="race">2R</td><td class="time">09:55</td><td>2歳未勝利</td><td></td><td class="turf">芝1600m 13頭</td></tr>
           <tr><td class="race">3R</td><td class="time">10:25</td><td>2歳未勝利</td><td></td><td class="dirt">ダ1600m 16頭</td></tr>
@@ -77,16 +71,15 @@
           <tr><td class="race">5R</td><td class="time">11:25</td><td>2歳新馬</td><td></td><td class="turf">芝1600m 16頭</td></tr>
           <tr><td class="race">6R</td><td class="time">12:15</td><td>2歳新馬</td><td></td><td class="turf">芝1800m 12頭</td></tr>
           <tr><td class="race">7R</td><td class="time">12:45</td><td>3歳以上1勝クラス</td><td></td><td class="dirt">ダ1400m 16頭</td></tr>
-          <tr><td class="race">8R</td><td class="time">13:15</td><td>ベゴニア賞</td><td class="win5">1勝クラス</td><td class="turf">芝1600m 8頭</td></tr>
-          <tr><td class="race">9R</td><td class="time">13:50</td><td>オリエンタル賞</td><td class="win5">2勝クラス</td><td class="turf">芝2000m 9頭</td></tr>
-          <tr><td class="race">10R</td><td class="time">14:25</td><td>アプローズ賞</td><td class="win5">2勝クラス</td><td class="dirt">ダ1400m 16頭</td></tr>
-          <tr><td class="race">11R</td><td class="time">15:01</td><td>ウェルカムS</td><td class="win5">3勝クラス</td><td class="turf">芝2000m 16頭</td></tr>
+          <tr><td class="race">8R</td><td class="time">13:15</td><td>ベゴニア賞</td><td><span class="win5">1勝</span></td><td class="turf">芝1600m 8頭</td></tr>
+          <tr><td class="race">9R</td><td class="time">13:50</td><td>オリエンタル賞</td><td><span class="win5">2勝</span></td><td class="turf">芝2000m 9頭</td></tr>
+          <tr><td class="race">10R</td><td class="time">14:25</td><td>アプローズ賞</td><td><span class="win5">2勝</span></td><td class="dirt">ダ1400m 16頭</td></tr>
+          <tr><td class="race">11R</td><td class="time">15:01</td><td>ウェルカムS</td><td><span class="win5">3勝</span></td><td class="turf">芝2000m 16頭</td></tr>
           <tr><td class="race">12R</td><td class="time">15:40</td><td>ジャパンC</td><td class="g1">GI</td><td class="turf">芝2400m 18頭</td></tr>
         </table>
       </div>
       <div class="track"><h2>4回 京都 8日目　天気：晴　芝(C)：良　ダ：良</h2>
-        <table>
-          <tr><th>R</th><th>発走</th><th>レース名</th><th>格</th><th>距離・馬場</th></tr>
+        <table><tr><th>R</th><th>発走</th><th>レース名</th><th>格</th><th>距離・馬場</th></tr>
           <tr><td class="race">1R</td><td class="time">09:40</td><td>2歳未勝利</td><td></td><td class="dirt">ダ1200m 16頭</td></tr>
           <tr><td class="race">2R</td><td class="time">10:10</td><td>2歳未勝利</td><td></td><td class="turf">芝1800m 13頭</td></tr>
           <tr><td class="race">3R</td><td class="time">10:40</td><td>2歳新馬</td><td></td><td class="turf">芝1200m 13頭</td></tr>
@@ -95,85 +88,82 @@
           <tr><td class="race">6R</td><td class="time">12:30</td><td>2歳新馬</td><td></td><td class="turf">芝2000m 9頭</td></tr>
           <tr><td class="race">7R</td><td class="time">13:01</td><td>3歳以上1勝クラス</td><td></td><td class="dirt">ダ1800m 16頭</td></tr>
           <tr><td class="race">8R</td><td class="time">13:30</td><td>3歳以上2勝クラス</td><td></td><td class="turf">芝2200m 8頭</td></tr>
-          <tr><td class="race">9R</td><td class="time">14:05</td><td>白菊賞</td><td class="win5">1勝クラス</td><td class="turf">芝1600m 11頭</td></tr>
-          <tr><td class="race">10R</td><td class="time">14:41</td><td>花園S</td><td class="win5">3勝クラス</td><td class="dirt">ダ1800m 16頭</td></tr>
-          <tr><td class="race">11R</td><td class="time">15:15</td><td>アリーヴォS</td><td class="win5">OP</td><td class="dirt">ダ1400m 16頭</td></tr>
+          <tr><td class="race">9R</td><td class="time">14:05</td><td>白菊賞</td><td><span class="win5">1勝</span></td><td class="turf">芝1600m 11頭</td></tr>
+          <tr><td class="race">10R</td><td class="time">14:41</td><td>花園S</td><td><span class="win5">3勝</span></td><td class="dirt">ダ1800m 16頭</td></tr>
+          <tr><td class="race">11R</td><td class="time">15:15</td><td>アリーヴォS</td><td><span class="win5">OP</span></td><td class="dirt">ダ1400m 16頭</td></tr>
           <tr><td class="race">12R</td><td class="time">16:15</td><td>京阪杯</td><td class="g3">GIII</td><td class="turf">芝1200m 18頭</td></tr>
         </table>
       </div>
     </div>
+
     <!-- English JRA -->
     <div id="jra-en" class="lang-content">
-      <div class="track"><h2>Tokyo 5th Meeting Day 8 Cloudy/Good Turf & Dirt</h2>
-        <table>
-          <tr><th>R</th><th>Post Time</th><th>Race Name</th><th>Grade</th><th>Distance/Surface</th></tr>
-          <tr><td class="race">1R</td><td class="time">09:31</td><td>2YO Maiden</td><td></td><td class="dirt">Dirt 1400m 16 horses</td></tr>
-          <tr><td class="race">2R</td><td class="time">09:55</td><td>2YO Maiden</td><td></td><td class="turf">Turf 1600m 13 horses</td></tr>
-          <tr><td class="race">3R</td><td class="time">10:25</td><td>2YO Maiden</td><td></td><td class="dirt">Dirt 1600m 16 horses</td></tr>
-          <tr><td class="race">4R</td><td class="time">10:55</td><td>2YO Maiden</td><td></td><td class="turf">Turf 2000m 13 horses</td></tr>
-          <tr><td class="race">5R</td><td class="time">11:25</td><td>2YO Debut</td><td></td><td class="turf">Turf 1600m 16 horses</td></tr>
-          <tr><td class="race">6R</td><td class="time">12:15</td><td>2YO Debut</td><td></td><td class="turf">Turf 1800m 12 horses</td></tr>
-          <tr><td class="race">7R</td><td class="time">12:45</td><td>3YO+ 1 Win</td><td></td><td class="dirt">Dirt 1400m 16 horses</td></tr>
-          <tr><td class="race">8R</td><td class="time">13:15</td><td>Begonia Sho</td><td class="win5">1 Win</td><td class="turf">Turf 1600m 8 horses</td></tr>
-          <tr><td class="race">9R</td><td class="time">13:50</td><td>Oriental Sho</td><td class="win5">2 Win</td><td class="turf">Turf 2000m 9 horses</td></tr>
-          <tr><td class="race">10R</td><td class="time">14:25</td><td>Applause Sho</td><td class="win5">2 Win</td><td class="dirt">Dirt 1400m 16 horses</td></tr>
-          <tr><td class="race">11R</td><td class="time">15:01</td><td>Welcome S</td><td class="win5">3 Win</td><td class="turf">Turf 2000m 16 horses</td></tr>
-          <tr><td class="race">12R</td><td class="time">15:40</td><td>Japan Cup</td><td class="g1">G1</td><td class="turf">Turf 2400m 18 horses</td></tr>
+      <div class="track"><h2>Tokyo 5th Meeting Day 8 Cloudy / Good Turf, Good Dirt</h2>
+        <table><tr><th>R</th><th>Post</th><th>Race Name</th><th>Grade</th><th>Distance/Surface</th></tr>
+          <tr><td class="race">1R</td><td class="time">09:31</td><td>2YO Maiden</td><td></td><td class="dirt">Dirt 1400m 16</td></tr>
+          <tr><td class="race">2R</td><td class="time">09:55</td><td>2YO Maiden</td><td></td><td class="turf">Turf 1600m 13</td></tr>
+          <tr><td class="race">3R</td><td class="time">10:25</td><td>2YO Maiden</td><td></td><td class="dirt">Dirt 1600m 16</td></tr>
+          <tr><td class="race">4R</td><td class="time">10:55</td><td>2YO Maiden</td><td></td><td class="turf">Turf 2000m 13</td></tr>
+          <tr><td class="race">5R</td><td class="time">11:25</td><td>2YO Debut</td><td></td><td class="turf">Turf 1600m 16</td></tr>
+          <tr><td class="race">6R</td><td class="time">12:15</td><td>2YO Debut</td><td></td><td class="turf">Turf 1800m 12</td></tr>
+          <tr><td class="race">7R</td><td class="time">12:45</td><td>3YO+ 1 Win Class</td><td></td><td class="dirt">Dirt 1400m 16</td></tr>
+          <tr><td class="race">8R</td><td class="time">13:15</td><td>Begonia Sho</td><td><span class="win5">1 Win</span></td><td class="turf">Turf 1600m 8</td></tr>
+          <tr><td class="race">9R</td><td class="time">13:50</td><td>Oriental Sho</td><td><span class="win5">2 Win</span></td><td class="turf">Turf 2000m 9</td></tr>
+          <tr><td class="race">10R</td><td class="time">14:25</td><td>Applause Sho</td><td><span class="win5">2 Win</span></td><td class="dirt">Dirt 1400m 16</td></tr>
+          <tr><td class="race">11R</td><td class="time">15:01</td><td>Welcome Stakes</td><td><span class="win5">3 Win</span></td><td class="turf">Turf 2000m 16</td></tr>
+          <tr><td class="race">12R</td><td class="time">15:40</td><td>Japan Cup</td><td class="g1">G1</td><td class="turf">Turf 2400m 18</td></tr>
         </table>
       </div>
-      <div class="track"><h2>Kyoto 4th Meeting Day 8 Sunny/Good Turf & Dirt</h2>
-        <table>
-          <tr><th>R</th><th>Post Time</th><th>Race Name</th><th>Grade</th><th>Distance/Surface</th></tr>
-          <tr><td class="race">1R</td><td class="time">09:40</td><td>2YO Maiden</td><td></td><td class="dirt">Dirt 1200m 16 horses</td></tr>
-          <tr><td class="race">2R</td><td class="time">10:10</td><td>2YO Maiden</td><td></td><td class="turf">Turf 1800m 13 horses</td></tr>
-          <tr><td class="race">3R</td><td class="time">10:40</td><td>2YO Debut</td><td></td><td class="turf">Turf 1200m 13 horses</td></tr>
-          <tr><td class="race">4R</td><td class="time">11:10</td><td>3YO+ 1 Win</td><td></td><td class="dirt">Dirt 1400m 16 horses</td></tr>
-          <tr><td class="race">5R</td><td class="time">11:40</td><td>3YO+ Jump Maiden</td><td></td><td class="turf">Jump 2910m 9 horses</td></tr>
-          <tr><td class="race">6R</td><td class="time">12:30</td><td>2YO Debut</td><td></td><td class="turf">Turf 2000m 9 horses</td></tr>
-          <tr><td class="race">7R</td><td class="time">13:01</td><td>3YO+ 1 Win</td><td></td><td class="dirt">Dirt 1800m 16 horses</td></tr>
-          <tr><td class="race">8R</td><td class="time">13:30</td><td>3YO+ 2 Win</td><td></td><td class="turf">Turf 2200m 8 horses</td></tr>
-          <tr><td class="race">9R</td><td class="time">14:05</td><td>Shiraume Sho</td><td class="win5">1 Win</td><td class="turf">Turf 1600m 11 horses</td></tr>
-          <tr><td class="race">10R</td><td class="time">14:41</td><td>Hanaen Stakes</td><td class="win5">3 Win</td><td class="dirt">Dirt 1800m 16 horses</td></tr>
-          <tr><td class="race">11R</td><td class="time">15:15</td><td>Allevo S</td><td class="win5">OP</td><td class="dirt">Dirt 1400m 16 horses</td></tr>
-          <tr><td class="race">12R</td><td class="time">16:15</td><td>Keihan Hai</td><td class="g3">G3</td><td class="turf">Turf 1200m 18 horses</td></tr>
+      <div class="track"><h2>Kyoto 4th Meeting Day 8 Sunny / Good Turf, Good Dirt</h2>
+        <table><tr><th>R</th><th>Post</th><th>Race Name</th><th>Grade</th><th>Distance/Surface</th></tr>
+          <tr><td class="race">1R</td><td class="time">09:40</td><td>2YO Maiden</td><td></td><td class="dirt">Dirt 1200m 16</td></tr>
+          <tr><td class="race">2R</td><td class="time">10:10</td><td>2YO Maiden</td><td></td><td class="turf">Turf 1800m 13</td></tr>
+          <tr><td class="race">3R</td><td class="time">10:40</td><td>2YO Debut</td><td></td><td class="turf">Turf 1200m 13</td></tr>
+          <tr><td class="race">4R</td><td class="time">11:10</td><td>3YO+ 1 Win Class</td><td></td><td class="dirt">Dirt 1400m 16</td></tr>
+          <tr><td class="race">5R</td><td class="time">11:40</td><td>3YO+ Hurdle Maiden</td><td></td><td class="turf">Hurdle 2910m 9</td></tr>
+          <tr><td class="race">6R</td><td class="time">12:30</td><td>2YO Debut</td><td></td><td class="turf">Turf 2000m 9</td></tr>
+          <tr><td class="race">7R</td><td class="time">13:01</td><td>3YO+ 1 Win Class</td><td></td><td class="dirt">Dirt 1800m 16</td></tr>
+          <tr><td class="race">8R</td><td class="time">13:30</td><td>3YO+ 2 Win Class</td><td></td><td class="turf">Turf 2200m 8</td></tr>
+          <tr><td class="race">9R</td><td class="time">14:05</td><td>Shiragiku Sho</td><td><span class="win5">1 Win</span></td><td class="turf">Turf 1600m 11</td></tr>
+          <tr><td class="race">10R</td><td class="time">14:41</td><td>Hanaen Stakes</td><td><span class="win5">3 Win</span></td><td class="dirt">Dirt 1800m 16</td></tr>
+          <tr><td class="race">11R</td><td class="time">15:15</td><td>Allevo Stakes</td><td><span class="win5">OP</span></td><td class="dirt">Dirt 1400m 16</td></tr>
+          <tr><td class="race">12R</td><td class="time">16:15</td><td>Keihan Hai</td><td class="g3">G3</td><td class="turf">Turf 1200m 18</td></tr>
         </table>
       </div>
     </div>
 
-    <!-- Thai -->
+    <!-- Thai JRA -->
     <div id="jra-th" class="lang-content">
       <div class="track"><h2>โตเกียว ครั้งที่ 5 วันที่ 8　เมฆมาก / หญ้าดี, ดินดี</h2>
-        <table>
-          <tr><th>R</th><th>เวลาเริ่ม</th><th>ชื่อการแข่ง</th><th>เกรด</th><th>ระยะทาง/พื้น</th></tr>
-          <tr><td class="race">1R</td><td class="time">09:31</td><td>2ขวบ ม้าใหม่</td><td></td><td class="dirt">ดิน 1400ม 16 ตัว</td></tr>
-          <tr><td class="race">2R</td><td class="time">09:55</td><td>2ขวบ ม้าใหม่</td><td></td><td class="turf">หญ้า 1600ม 13 ตัว</td></tr>
-          <tr><td class="race">3R</td><td class="time">10:25</td><td>2ขวบ ม้าใหม่</td><td></td><td class="dirt">ดิน 1600ม 16 ตัว</td></tr>
-          <tr><td class="race">4R</td><td class="time">10:55</td><td>2ขวบ ม้าใหม่</td><td></td><td class="turf">หญ้า 2000ม 13 ตัว</td></tr>
-          <tr><td class="race">5R</td><td class="time">11:25</td><td>2ขวบ เปิดตัว</td><td></td><td class="turf">หญ้า 1600ม 16 ตัว</td></tr>
-          <tr><td class="race">6R</td><td class="time">12:15</td><td>2ขวบ เปิดตัว</td><td></td><td class="turf">หญ้า 1800ม 12 ตัว</td></tr>
-          <tr><td class="race">7R</td><td class="time">12:45</td><td>3ขวบ+ ชนะ1ครั้ง</td><td></td><td class="dirt">ดิน 1400ม 16 ตัว</td></tr>
-          <tr><td class="race">8R</td><td class="time">13:15</td><td>เบโกเนีย โช</td><td class="win5">1 Win</td><td class="turf">หญ้า 1600ม 8 ตัว</td></tr>
-          <tr><td class="race">9R</td><td class="time">13:50</td><td>โอเรียนตัล โช</td><td class="win5">2 Win</td><td class="turf">หญ้า 2000ม 9 ตัว</td></tr>
-          <tr><td class="race">10R</td><td class="time">14:25</td><td>แอปพลอส โช</td><td class="win5">2 Win</td><td class="dirt">ดิน 1400ม 16 ตัว</td></tr>
-          <tr><td class="race">11R</td><td class="time">15:01</td><td>เวลคัม S</td><td class="win5">3 Win</td><td class="turf">หญ้า 2000ม 16 ตัว</td></tr>
-          <tr><td class="race">12R</td><td class="time">15:40</td><td>เจแปนคัพ</td><td class="g1">G1</td><td class="turf">หญ้า 2400ม 18 ตัว</td></tr>
+        <table><tr><th>R</th><th>เวลาเริ่ม</th><th>ชื่อแข่ง</th><th>เกรด</th><th>ระยะทาง/พื้นผิว</th></tr>
+          <tr><td class="race">1R</td><td class="time">09:31</td><td>2ปี ม้าใหม่</td><td></td><td class="dirt">ดิน 1400ม 16</td></tr>
+          <tr><td class="race">2R</td><td class="time">09:55</td><td>2ปี ม้าใหม่</td><td></td><td class="turf">หญ้า 1600ม 13</td></tr>
+          <tr><td class="race">3R</td><td class="time">10:25</td><td>2ปี ม้าใหม่</td><td></td><td class="dirt">ดิน 1600ม 16</td></tr>
+          <tr><td class="race">4R</td><td class="time">10:55</td><td>2ปี ม้าใหม่</td><td></td><td class="turf">หญ้า 2000ม 13</td></tr>
+          <tr><td class="race">5R</td><td class="time">11:25</td><td>2ปี เปิดตัว</td><td></td><td class="turf">หญ้า 1600ม 16</td></tr>
+          <tr><td class="race">6R</td><td class="time">12:15</td><td>2ปี เปิดตัว</td><td></td><td class="turf">หญ้า 1800ม 12</td></tr>
+          <tr><td class="race">7R</td><td class="time">12:45</td><td>3ปี+ ชนะ1ครั้ง</td><td></td><td class="dirt">ดิน 1400ม 16</td></tr>
+          <tr><td class="race">8R</td><td class="time">13:15</td><td>เบโกเนีย โช</td><td><span class="win5">1 Win</span></td><td class="turf">หญ้า 1600ม 8</td></tr>
+          <tr><td class="race">9R</td><td class="time">13:50</td><td>โอเรียนตัล โช</td><td><span class="win5">2 Win</span></td><td class="turf">หญ้า 2000ม 9</td></tr>
+          <tr><td class="race">10R</td><td class="time">14:25</td><td>แอปพลอส โช</td><td><span class="win5">2 Win</span></td><td class="dirt">ดิน 1400ม 16</td></tr>
+          <tr><td class="race">11R</td><td class="time">15:01</td><td>เวลคัม S</td><td><span class="win5">3 Win</span></td><td class="turf">หญ้า 2000ม 16</td></tr>
+          <tr><td class="race">12R</td><td class="time">15:40</td><td>เจแปนคัพ</td><td class="g1">G1</td><td class="turf">หญ้า 2400ม 18</td></tr>
         </table>
       </div>
       <div class="track"><h2>เกียวโต ครั้งที่ 4 วันที่ 8　แดดออก / หญ้าดี, ดินดี</h2>
-        <table>
-          <tr><th>R</th><th>เวลาเริ่ม</th><th>ชื่อการแข่ง</th><th>เกรด</th><th>ระยะทาง/พื้น</th></tr>
-          <tr><td class="race">1R</td><td class="time">09:40</td><td>2ขวบ ม้าใหม่</td><td></td><td class="dirt">ดิน 1200ม 16 ตัว</td></tr>
-          <tr><td class="race">2R</td><td class="time">10:10</td><td>2ขวบ ม้าใหม่</td><td></td><td class="turf">หญ้า 1800ม 13 ตัว</td></tr>
-          <tr><td class="race">3R</td><td class="time">10:40</td><td>2ขวบ เปิดตัว</td><td></td><td class="turf">หญ้า 1200ม 13 ตัว</td></tr>
-          <tr><td class="race">4R</td><td class="time">11:10</td><td>3ขวบ+ ชนะ1ครั้ง</td><td></td><td class="dirt">ดิน 1400ม 16 ตัว</td></tr>
-          <tr><td class="race">5R</td><td class="time">11:40</td><td>3ขวบ+ กระโดด ม้าใหม่</td><td></td><td class="turf">กระโดด 2910ม 9 ตัว</td></tr>
-          <tr><td class="race">6R</td><td class="time">12:30</td><td>2ขวบ เปิดตัว</td><td></td><td class="turf">หญ้า 2000ม 9 ตัว</td></tr>
-          <tr><td class="race">7R</td><td class="time">13:01</td><td>3ขวบ+ ชนะ1ครั้ง</td><td></td><td class="dirt">ดิน 1800ม 16 ตัว</td></tr>
-          <tr><td class="race">8R</td><td class="time">13:30</td><td>3ขวบ+ ชนะ2ครั้ง</td><td></td><td class="turf">หญ้า 2200ม 8 ตัว</td></tr>
-          <tr><td class="race">9R</td><td class="time">14:05</td><td>ชิรากิคุ โช</td><td class="win5">1 Win</td><td class="turf">หญ้า 1600ม 11 ตัว</td></tr>
-          <tr><td class="race">10R</td><td class="time">14:41</td><td>ฮานาเอ็น S</td><td class="win5">3 Win</td><td class="dirt">ดิน 1800ม 16 ตัว</td></tr>
-          <tr><td class="race">11R</td><td class="time">15:15</td><td>อารีโว S</td><td class="win5">OP</td><td class="dirt">ดิน 1400ม 16 ตัว</td></tr>
-          <tr><td class="race">12R</td><td class="time">16:15</td><td>เคฮัน ไฮ</td><td class="g3">G3</td><td class="turf">หญ้า 1200ม 18 ตัว</td></tr>
+        <table><tr><th>R</th><th>เวลาเริ่ม</th><th>ชื่อแข่ง</th><th>เกรด</th><th>ระยะทาง/พื้นผิว</th></tr>
+          <tr><td class="race">1R</td><td class="time">09:40</td><td>2ปี ม้าใหม่</td><td></td><td class="dirt">ดิน 1200ม 16</td></tr>
+          <tr><td class="race">2R</td><td class="time">10:10</td><td>2ปี ม้าใหม่</td><td></td><td class="turf">หญ้า 1800ม 13</td></tr>
+          <tr><td class="race">3R</td><td class="time">10:40</td><td>2ปี เปิดตัว</td><td></td><td class="turf">หญ้า 1200ม 13</td></tr>
+          <tr><td class="race">4R</td><td class="time">11:10</td><td>3ปี+ ชนะ1ครั้ง</td><td></td><td class="dirt">ดิน 1400ม 16</td></tr>
+          <tr><td class="race">5R</td><td class="time">11:40</td><td>3ปี+ กระโดด ม้าใหม่</td><td></td><td class="turf">กระโดด 2910ม 9</td></tr>
+          <tr><td class="race">6R</td><td class="time">12:30</td><td>2ปี เปิดตัว</td><td></td><td class="turf">หญ้า 2000ม 9</td></tr>
+          <tr><td class="race">7R</td><td class="time">13:01</td><td>3ปี+ ชนะ1ครั้ง</td><td></td><td class="dirt">ดิน 1800ม 16</td></tr>
+          <tr><td class="race">8R</td><td class="time">13:30</td><td>3ปี+ ชนะ2ครั้ง</td><td></td><td class="turf">หญ้า 2200ม 8</td></tr>
+          <tr><td class="race">9R</td><td class="time">14:05</td><td>ชิรากิคุ โช</td><td><span class="win5">1 Win</span></td><td class="turf">หญ้า 1600ม 11</td></tr>
+          <tr><td class="race">10R</td><td class="time">14:41</td><td>ฮานาเอ็น S</td><td><span class="win5">3 Win</span></td><td class="dirt">ดิน 1800ม 16</td></tr>
+          <tr><td class="race">11R</td><td class="time">15:15</td><td>อารีโว S</td><td><span class="win5">OP</span></td><td class="dirt">ดิน 1400ม 16</td></tr>
+          <tr><td class="race">12R</td><td class="time">16:15</td><td>เคฮัน ไฮ</td><td class="g3">G3</td><td class="turf">หญ้า 1200ม 18</td></tr>
         </table>
       </div>
     </div>
@@ -181,44 +171,47 @@
 
   <!-- NAR Content -->
   <div id="nar" class="content">
-    <!-- 日本語 NAR -->
-    <div id="nar-jp" class="lang-content active">
-      <div class="track"><h2>水沢競馬場　1回競馬4日目　天気：晴　ダ：良</h2>
-        <table>
-          <tr><th>R</th><th>発走</th><th>レース名</th><th>格</th><th>距離・馬場</th></tr>
-          <tr><td class="race">1R</td><td class="time">15:50</td><td>つばめメンション. (C2)</td><td></td><td class="dirt">ダ1300m 12頭</td></tr>
-          <tr><td class="race">2R</td><td class="time">16:25</td><td>ふたつったつンン... (C2)</td><td></td><td class="dirt">ダ1300m 9頭</td></tr>
-          <tr><td class="race">3R</td><td class="time">16:55</td><td>雪一輪の花枝だー. (C1)</td><td></td><td class="dirt">ダ1400m 10頭</td></tr>
-          <tr><td class="race">4R</td><td class="time">17:30</td><td>KYUSHU DR. (C1)</td><td></td><td class="dirt">ダ1400m 10頭</td></tr>
-          <tr><td class="race">5R</td><td class="time">18:05</td><td>カールマルカ小賞</td><td></td><td class="dirt">ダ1400m 12頭</td></tr>
-          <tr><td class="race">6R</td><td class="time">18:40</td><td>野馬のGlory! (B)</td><td></td><td class="dirt">ダ1400m 11頭</td></tr>
+    <!-- Japanese NAR -->
+    <div id="nar-jp" class="lang-content">
+      <div class="track"><h2>水沢 7回 4日目　天気：晴　ダ：良</h2>
+        <table><tr><th>R</th><th>発走</th><th>レース名</th><th>格</th><th>距離・馬場</th></tr>
+          <tr><td class="race">1R</td><td class="time">11:50</td><td>C2</td><td></td><td class="dirt">ダ850m 9頭</td></tr>
+          <tr><td class="race">2R</td><td class="time">12:25</td><td>C2十組</td><td></td><td class="dirt">ダ1300m 10頭</td></tr>
+          <tr><td class="race">3R</td><td class="time">13:05</td><td>C2九組</td><td></td><td class="dirt">ダ1300m 10頭</td></tr>
+          <tr><td class="race">4R</td><td class="time">13:40</td><td>C2八組</td><td></td><td class="dirt">ダ1300m 10頭</td></tr>
+          <tr><td class="race">5R</td><td class="time">14:15</td><td>2歳</td><td></td><td class="dirt">ダ1300m 9頭</td></tr>
+          <tr><td class="race">6R</td><td class="time">14:50</td><td>2歳</td><td></td><td class="dirt">ダ1300m 10頭</td></tr>
+          <tr><td class="race">7R</td><td class="time">15:25</td><td>C1</td><td></td><td class="dirt">ダ850m 9頭</td></tr>
+          <tr><td class="race">8R</td><td class="time">15:55</td><td>C1</td><td></td><td class="dirt">ダ850m 10頭</td></tr>
+          <tr><td class="race">9R</td><td class="time">16:30</td><td>C1</td><td></td><td class="dirt">ダ1400m 12頭</td></tr>
+          <tr><td class="race">10R</td><td class="time">17:05</td><td>山王賞 (C1)</td><td></td><td class="dirt">ダ1600m 11頭</td></tr>
+          <tr><td class="race">11R</td><td class="time">17:40</td><td>社会スタリオンS</td><td class="heavy">重賞</td><td class="dirt">ダ1600m 12頭</td></tr>
+          <tr><td class="race">12R</td><td class="time">18:15</td><td>北上川大賞典</td><td class="heavy">重賞</td><td class="dirt">ダ2500m 8頭</td></tr>
         </table>
       </div>
-      <div class="track"><h2>高知競馬場　17回競馬4日目　天気：晴　ダ：良</h2>
-        <table>
-          <tr><th>R</th><th>発走</th><th>レース名</th><th>格</th><th>距離・馬場</th></tr>
-          <tr><td class="race">1R</td><td class="time">14:00</td><td>3歳以上特別競走...</td><td></td><td class="dirt">ダ2000m 10頭</td></tr>
-          <tr><td class="race">2R</td><td class="time">14:35</td><td>リンジンジャく多... (2歳)</td><td></td><td class="dirt">ダ2000m 10頭</td></tr>
-          <tr><td class="race">3R</td><td class="time">15:05</td><td>スノート上空 (2歳)</td><td></td><td class="dirt">ダ2000m 10頭</td></tr>
-          <tr><td class="race">4R</td><td class="time">15:35</td><td>3.56Lの先生... (2歳)</td><td></td><td class="dirt">ダ2000m 10頭</td></tr>
-          <tr><td class="race">5R</td><td class="time">16:10</td><td>戦隊競走オタク競馬...</td><td></td><td class="dirt">ダ2000m 10頭</td></tr>
-          <tr><td class="race">6R</td><td class="time">16:45</td><td>園児定員96組...</td><td></td><td class="dirt">ダ2000m 9頭</td></tr>
-          <tr><td class="race">7R</td><td class="time">17:25</td><td>鳴門海峡の左手で... (B)</td><td></td><td class="dirt">ダ2000m 9頭</td></tr>
-          <tr><td class="race">8R</td><td class="time">17:55</td><td>力、それぞの特別. (2頭)</td><td></td><td class="dirt">ダ2000m 9หัว</td></tr>
-          <tr><td class="race">9R</td><td class="time">18:30</td><td>下のからたう</td><td></td><td class="dirt">ダ2000m 9頭</td></tr>
-          <tr><td class="race">10R</td><td class="time">19:00</td><td>銅像特別 (2頭)</td><td></td><td class="dirt">ด2000m 10頭</td></tr>
-          <tr><td class="race">11R</td><td class="time">19:30</td><td>左スレットパンカ (3頭)</td><td></td><td class="dirt">ダ2000m 10頭</td></tr>
+      <div class="track"><h2>高知 17回 5日目　天気：晴　ダ：良</h2>
+        <table><tr><th>R</th><th>発走</th><th>レース名</th><th>格</th><th>距離・馬場</th></tr>
+          <tr><td class="race">1R</td><td class="time">14:00</td><td>第五回今年も観戦出...</td><td></td><td class="dirt">ダ2000m 10頭</td></tr>
+          <tr><td class="race">2R</td><td class="time">14:35</td><td>リベンジャあくる誕... (2歳)</td><td></td><td class="dirt">ダ2000m 10頭</td></tr>
+          <tr><td class="race">3R</td><td class="time">15:05</td><td>スウィート十勝空 (2歳)</td><td></td><td class="dirt">ダ2000m 10頭</td></tr>
+          <tr><td class="race">4R</td><td class="time">15:35</td><td>祝56しげひら誕生... (2歳)</td><td></td><td class="dirt">ダ2000m 10頭</td></tr>
+          <tr><td class="race">5R</td><td class="time">16:10</td><td>折原翠斗☆応援隊...</td><td></td><td class="dirt">ダ2000m 10頭</td></tr>
+          <tr><td class="race">6R</td><td class="time">16:45</td><td>国鉄広尾線96周年...</td><td></td><td class="dirt">ダ2000m 9頭</td></tr>
+          <tr><td class="race">7R</td><td class="time">17:25</td><td>国鉄士幌線100周...</td><td></td><td class="dirt">ダ2000m 9頭</td></tr>
+          <tr><td class="race">8R</td><td class="time">17:55</td><td>根室線帯広駅120...</td><td></td><td class="dirt">ダ2000m 9頭</td></tr>
+          <tr><td class="race">9R</td><td class="time">18:30</td><td>千秋ありかとぅ</td><td></td><td class="dirt">ダ2000m 9頭</td></tr>
+          <tr><td class="race">10R</td><td class="time">19:00</td><td>銅像特別 (2歳)</td><td></td><td class="dirt">ダ2000m 10頭</td></tr>
+          <tr><td class="race">11R</td><td class="time">19:30</td><td>ばんえいオークス (3歳)</td><td class="heavy">重賞</td><td class="dirt">ダ2000m 10頭</td></tr>
           <tr><td class="race">12R</td><td class="time">20:05</td><td>B1-3</td><td></td><td class="dirt">ダ2000m 10頭</td></tr>
         </table>
       </div>
-      <div class="track"><h2>佐賀競馬場　15回競馬4日目　天気：晴　ダ：良</h2>
-        <table>
-          <tr><th>R</th><th>発走</th><th>レース名</th><th>格</th><th>距離・馬場</th></tr>
+      <div class="track"><h2>佐賀 15回 4日目　天気：晴　ダ：良</h2>
+        <table><tr><th>R</th><th>発走</th><th>レース名</th><th>格</th><th>距離・馬場</th></tr>
           <tr><td class="race">1R</td><td class="time">14:55</td><td>2歳-3</td><td></td><td class="dirt">ダ1300m 9頭</td></tr>
           <tr><td class="race">2R</td><td class="time">15:30</td><td>2歳-2</td><td></td><td class="dirt">ダ1300m 9頭</td></tr>
           <tr><td class="race">3R</td><td class="time">16:00</td><td>C1-7</td><td></td><td class="dirt">ダ1600m 10頭</td></tr>
-          <tr><td class="race">4R</td><td class="time">16:35</td><td>五島産もみじ特別 (C1)</td><td></td><td class="dirt">ダ1600m 9頭</td></tr>
-          <tr><td class="race">5R</td><td class="time">17:05</td><td>やまくちりんご特別 (C1)</td><td></td><td class="dirt">ダ1600m 11頭</td></tr>
+          <tr><td class="race">4R</td><td class="time">16:35</td><td>広島県もみじ特別 (C1)</td><td></td><td class="dirt">ダ1600m 9頭</td></tr>
+          <tr><td class="race">5R</td><td class="time">17:05</td><td>やまぐち和牛特別 (C1)</td><td></td><td class="dirt">ダ1600m 11頭</td></tr>
           <tr><td class="race">6R</td><td class="time">17:35</td><td>C1-6</td><td></td><td class="dirt">ダ1600m 10頭</td></tr>
           <tr><td class="race">7R</td><td class="time">18:10</td><td>C1-5</td><td></td><td class="dirt">ダ1600m 11頭</td></tr>
           <tr><td class="race">8R</td><td class="time">18:45</td><td>C1-4</td><td></td><td class="dirt">ダ1600m 10頭</td></tr>
@@ -229,186 +222,41 @@
         </table>
       </div>
     </div>
-
-    <!-- English NAR -->
-    <div id="nar-en" class="lang-content">
-      <div class="track"><h2>Mizusawa Racecourse - 1st Meeting Day 4 Sunny/Good Dirt</h2>
-        <table>
-          <tr><th>R</th><th>Post Time</th><th>Race Name</th><th>Grade</th><th>Distance/Surface</th></tr>
-          <tr><td class="race">1R</td><td class="time">15:50</td><td>Tsubame Mention (C2)</td><td></td><td class="dirt">Dirt 1300m 12 horses</td></tr>
-          <tr><td class="race">2R</td><td class="time">16:25</td><td>Futatsu Tatsu Nn (C2)</td><td></td><td class="dirt">Dirt 1300m 9 horses</td></tr>
-          <tr><td class="race">3R</td><td class="time">16:55</td><td>Yuki Ichirin no Hanaeda (C1)</td><td></td><td class="dirt">Dirt 1400m 10 horses</td></tr>
-          <tr><td class="race">4R</td><td class="time">17:30</td><td>KYUSHU DR. (C1)</td><td></td><td class="dirt">Dirt 1400m 10 horses</td></tr>
-          <tr><td class="race">5R</td><td class="time">18:05</td><td>Carl Maruka Small Prize</td><td></td><td class="dirt">Dirt 1400m 12 horses</td></tr>
-          <tr><td class="race">6R</td><td class="time">18:40</td><td>Nouma no Glory! (B)</td><td></td><td class="dirt">Dirt 1400m 11 horses</td></tr>
-        </table>
-      </div>
-      <div class="track"><h2>Kochi Racecourse - 17th Meeting Day 4 Sunny/Good Dirt</h2>
-        <table>
-          <tr><th>R</th><th>Post Time</th><th>Race Name</th><th>Grade</th><th>Distance/Surface</th></tr>
-          <tr><td class="race">1R</td><td class="time">14:00</td><td>3YO+ Special Race...</td><td></td><td class="dirt">Dirt 2000m 10 horses</td></tr>
-          <tr><td class="race">2R</td><td class="time">14:35</td><td>Rinjija Ku Ta... (2YO)</td><td></td><td class="dirt">Dirt 2000m 10 horses</td></tr>
-          <tr><td class="race">3R</td><td class="time">15:05</td><td>Sunoto Joku (2YO)</td><td></td><td class="dirt">Dirt 2000m 10 horses</td></tr>
-          <tr><td class="race">4R</td><td class="time">15:35</td><td>3.56L no Sensei... (2YO)</td><td></td><td class="dirt">Dirt 2000m 10 horses</td></tr>
-          <tr><td class="race">5R</td><td class="time">16:10</td><td>Sentai Kyoso Otaku Keiba...</td><td></td><td class="dirt">Dirt 2000m 10 horses</td></tr>
-          <tr><td class="race">6R</td><td class="time">16:45</td><td>Enji Teiin 96 Kum...</td><td></td><td class="dirt">Dirt 2000m 9 horses</td></tr>
-          <tr><td class="race">7R</td><td class="time">17:25</td><td>Naruto Kaikyo no Hidari de... (B)</td><td></td><td class="dirt">Dirt 2000m 9 horses</td></tr>
-          <tr><td class="race">8R</td><td class="time">17:55</td><td>Chikara, Sore zo no Tokubetsu (2YO)</td><td></td><td class="dirt">Dirt 2000m 9 horses</td></tr>
-          <tr><td class="race">9R</td><td class="time">18:30</td><td>Shita no Kara Ta U</td><td></td><td class="dirt">Dirt 2000m 9 horses</td></tr>
-          <tr><td class="race">10R</td><td class="time">19:00</td><td>Dozou Tokubetsu (2YO)</td><td></td><td class="dirt">Dirt 2000m 10 horses</td></tr>
-          <tr><td class="race">11R</td><td class="time">19:30</td><td>Hidari Thread Punk (3YO)</td><td></td><td class="dirt">Dirt 2000m 10 horses</td></tr>
-          <tr><td class="race">12R</td><td class="time">20:05</td><td>B1-3</td><td></td><td class="dirt">Dirt 2000m 10 horses</td></tr>
-        </table>
-      </div>
-      <div class="track"><h2>Saga Racecourse - 15th Meeting Day 4 Sunny/Good Dirt</h2>
-        <table>
-          <tr><th>R</th><th>Post Time</th><th>Race Name</th><th>Grade</th><th>Distance/Surface</th></tr>
-          <tr><td class="race">1R</td><td class="time">14:55</td><td>2YO-3</td><td></td><td class="dirt">Dirt 1300m 9 horses</td></tr>
-          <tr><td class="race">2R</td><td class="time">15:30</td><td>2YO-2</td><td></td><td class="dirt">Dirt 1300m 9 horses</td></tr>
-          <tr><td class="race">3R</td><td class="time">16:00</td><td>C1-7</td><td></td><td class="dirt">Dirt 1600m 10 horses</td></tr>
-          <tr><td class="race">4R</td><td class="time">16:35</td><td>Goto Momiji Tokubetsu (C1)</td><td></td><td class="dirt">Dirt 1600m 9 horses</td></tr>
-          <tr><td class="race">5R</td><td class="time">17:05</td><td>Yamaguchi Ringo Tokubetsu (C1)</td><td></td><td class="dirt">Dirt 1600m 11 horses</td></tr>
-          <tr><td class="race">6R</td><td class="time">17:35</td><td>C1-6</td><td></td><td class="dirt">Dirt 1600m 10 horses</td></tr>
-          <tr><td class="race">7R</td><td class="time">18:10</td><td>C1-5</td><td></td><td class="dirt">Dirt 1600m 11 horses</td></tr>
-          <tr><td class="race">8R</td><td class="time">18:45</td><td>C1-4</td><td></td><td class="dirt">Dirt 1600m 10 horses</td></tr>
-          <tr><td class="race">9R</td><td class="time">19:20</td><td>C3-3</td><td></td><td class="dirt">Dirt 1400m 11 horses</td></tr>
-          <tr><td class="race">10R</td><td class="time">19:50</td><td>C3-2</td><td></td><td class="dirt">Dirt 1400m 12 horses</td></tr>
-          <tr><td class="race">11R</td><td class="time">20:20</td><td>Tamashige Tokubetsu (C3)</td><td></td><td class="dirt">Dirt 1400m 8 horses</td></tr>
-          <tr><td class="race">12R</td><td class="time">20:50</td><td>Final Race (C3)</td><td></td><td class="dirt">Dirt 1300m 12 horses</td></tr>
-        </table>
-      </div>
-    </div>
-    <!-- English NAR -->
-    <div id="nar-en" class="lang-content">
-      <div class="track"><h2>Mizusawa Racecourse - 1st Meeting Day 4 Sunny/Good Dirt</h2>
-        <table>
-          <tr><th>R</th><th>Post Time</th><th>Race Name</th><th>Grade</th><th>Distance/Surface</th></tr>
-          <tr><td class="race">1R</td><td class="time">15:50</td><td>Tsubame Mention (C2)</td><td></td><td class="dirt">Dirt 1300m 12 horses</td></tr>
-          <tr><td class="race">2R</td><td class="time">16:25</td><td>Futatsu Tatsu Nn (C2)</td><td></td><td class="dirt">Dirt 1300m 9 horses</td></tr>
-          <tr><td class="race">3R</td><td class="time">16:55</td><td>Yuki Ichirin no Hanaeda (C1)</td><td></td><td class="dirt">Dirt 1400m 10 horses</td></tr>
-          <tr><td class="race">4R</td><td class="time">17:30</td><td>KYUSHU DR. (C1)</td><td></td><td class="dirt">Dirt 1400m 10 horses</td></tr>
-          <tr><td class="race">5R</td><td class="time">18:05</td><td>Carl Maruka Small Prize</td><td></td><td class="dirt">Dirt 1400m 12 horses</td></tr>
-          <tr><td class="race">6R</td><td class="time">18:40</td><td>Nouma no Glory! (B)</td><td></td><td class="dirt">Dirt 1400m 11 horses</td></tr>
-        </table>
-      </div>
-      <div class="track"><h2>Kochi Racecourse - 17th Meeting Day 4 Sunny/Good Dirt</h2>
-        <table>
-          <tr><th>R</th><th>Post Time</th><th>Race Name</th><th>Grade</th><th>Distance/Surface</th></tr>
-          <tr><td class="race">1R</td><td class="time">14:00</td><td>3YO+ Special Race...</td><td></td><td class="dirt">Dirt 2000m 10 horses</td></tr>
-          <tr><td class="race">2R</td><td class="time">14:35</td><td>Rinjija Ku Ta... (2YO)</td><td></td><td class="dirt">Dirt 2000m 10 horses</td></tr>
-          <tr><td class="race">3R</td><td class="time">15:05</td><td>Sunoto Joku (2YO)</td><td></td><td class="dirt">Dirt 2000m 10 horses</td></tr>
-          <tr><td class="race">4R</td><td class="time">15:35</td><td>3.56L no Sensei... (2YO)</td><td></td><td class="dirt">Dirt 2000m 10 horses</td></tr>
-          <tr><td class="race">5R</td><td class="time">16:10</td><td>Sentai Kyoso Otaku Keiba...</td><td></td><td class="dirt">Dirt 2000m 10 horses</td></tr>
-          <tr><td class="race">6R</td><td class="time">16:45</td><td>Enji Teiin 96 Kum...</td><td></td><td class="dirt">Dirt 2000m 9 horses</td></tr>
-          <tr><td class="race">7R</td><td class="time">17:25</td><td>Naruto Kaikyo no Hidari de... (B)</td><td></td><td class="dirt">Dirt 1400m 9 horses</td></tr>
-          <tr><td class="race">8R</td><td class="time">17:55</td><td>Chikara, Sore zo no Tokubetsu (A2)</td><td></td><td class="dirt">Dirt 1400m 10 horses</td></tr>
-          <tr><td class="race">9R</td><td class="time">18:30</td><td>Android Harajuku (C2)</td><td></td><td class="dirt">Dirt 900m 10 horses</td></tr>
-          <tr><td class="race">10R</td><td class="time">19:00</td><td>SAGA Panja... (C2)</td><td></td><td class="dirt">Dirt 1400m 12 horses</td></tr>
-          <tr><td class="race">11R</td><td class="time">19:30</td><td>Hidari Thread Punk (3YO)</td><td></td><td class="dirt">Dirt 2000m 10 horses</td></tr>
-          <tr><td class="race">12R</td><td class="time">20:05</td><td>B1-3</td><td></td><td class="dirt">Dirt 2000m 10 horses</td></tr>
-        </table>
-      </div>
-      <div class="track"><h2>Saga Racecourse - 15th Meeting Day 4 Sunny/Good Dirt</h2>
-        <table>
-          <tr><th>R</th><th>Post Time</th><th>Race Name</th><th>Grade</th><th>Distance/Surface</th></tr>
-          <tr><td class="race">1R</td><td class="time">14:55</td><td>2YO-3</td><td></td><td class="dirt">Dirt 1300m 9 horses</td></tr>
-          <tr><td class="race">2R</td><td class="time">15:30</td><td>2YO-2</td><td></td><td class="dirt">Dirt 1300m 9 horses</td></tr>
-          <tr><td class="race">3R</td><td class="time">16:00</td><td>C1-7</td><td></td><td class="dirt">Dirt 1600m 10 horses</td></tr>
-          <tr><td class="race">4R</td><td class="time">16:35</td><td>Goto Momiji Tokubetsu (C1)</td><td></td><td class="dirt">Dirt 1600m 9 horses</td></tr>
-          <tr><td class="race">5R</td><td class="time">17:05</td><td>Yamaguchi Ringo Tokubetsu (C1)</td><td></td><td class="dirt">Dirt 1600m 11 horses</td></tr>
-          <tr><td class="race">6R</td><td class="time">17:35</td><td>C1-6</td><td></td><td class="dirt">Dirt 1600m 10 horses</td></tr>
-          <tr><td class="race">7R</td><td class="time">18:10</td><td>C1-5</td><td></td><td class="dirt">Dirt 1600m 11 horses</td></tr>
-          <tr><td class="race">8R</td><td class="time">18:45</td><td>C1-4</td><td></td><td class="dirt">Dirt 1600m 10 horses</td></tr>
-          <tr><td class="race">9R</td><td class="time">19:20</td><td>C3-3</td><td></td><td class="dirt">Dirt 1400m 11 horses</td></tr>
-          <tr><td class="race">10R</td><td class="time">19:50</td><td>C3-2</td><td></td><td class="dirt">Dirt 1400m 12 horses</td></tr>
-          <tr><td class="race">11R</td><td class="time">20:20</td><td>Tamashige Tokubetsu (C3)</td><td></td><td class="dirt">Dirt 1400m 8 horses</td></tr>
-          <tr><td class="race">12R</td><td class="time">20:50</td><td>Final Race (C3)</td><td></td><td class="dirt">Dirt 1300m 12 horses</td></tr>
-        </table>
-      </div>
-    </div>
-    <!-- Thai NAR -->
-    <div id="nar-th" class="lang-content">
-      <div class="track"><h2>มิซุซาวะ - ครั้งที่ 1 วันที่ 4 แดดออก/ดินดี</h2>
-        <table>
-          <tr><th>R</th><th>เวลาเริ่ม</th><th>ชื่อการแข่ง</th><th>เกรด</th><th>ระยะทาง/พื้น</th></tr>
-          <tr><td class="race">1R</td><td class="time">15:50</td><td>สึบาเม เมนชัน (C2)</td><td></td><td class="dirt">ดิน 1300ม 12 ตัว</td></tr>
-          <tr><td class="race">2R</td><td class="time">16:25</td><td>ฟุตะสึ ตะสึ นน (C2)</td><td></td><td class="dirt">ดิน 1300ม 9 ตัว</td></tr>
-          <tr><td class="race">3R</td><td class="time">16:55</td><td>ยูกิ อิชิริน โนะ ฮานาเอดะ (C1)</td><td></td><td class="dirt">ดิน 1400ม 10 ตัว</td></tr>
-          <tr><td class="race">4R</td><td class="time">17:30</td><td>คิวชู DR. (C1)</td><td></td><td class="dirt">ดิน 1400ม 10 ตัว</td></tr>
-          <tr><td class="race">5R</td><td class="time">18:05</td><td>คาร์ล มารุกะ Small Prize</td><td></td><td class="dirt">ดิน 1400ม 12 ตัว</td></tr>
-          <tr><td class="race">6R</td><td class="time">18:40</td><td>โนุมะ โนะ Glory! (B)</td><td></td><td class="dirt">ดิน 1400ม 11 ตัว</td></tr>
-        </table>
-      </div>
-      <div class="track"><h2>โคจิ - ครั้งที่ 17 วันที่ 4 แดดออก/ดินดี</h2>
-        <table>
-          <tr><th>R</th><th>เวลาเริ่ม</th><th>ชื่อการแข่ง</th><th>เกรด</th><th>ระยะทาง/พื้น</th></tr>
-          <tr><td class="race">1R</td><td class="time">14:00</td><td>3ขวบ+ Special Race...</td><td></td><td class="dirt">ดิน 2000ม 10 ตัว</td></tr>
-          <tr><td class="race">2R</td><td class="time">14:35</td><td>รินจิญจา คุ ตะ... (2ขวบ)</td><td></td><td class="dirt">ดิน 2000ม 10 ตัว</td></tr>
-          <tr><td class="race">3R</td><td class="time">15:05</td><td>สุโนโตะ โจกุ (2ขวบ)</td><td></td><td class="dirt">ดิน 2000ม 10 ตัว</td></tr>
-          <tr><td class="race">4R</td><td class="time">15:35</td><td>3.56L no Sensei... (2ขวบ)</td><td></td><td class="dirt">ดิน 2000ม 10 ตัว</td></tr>
-          <tr><td class="race">5R</td><td class="time">16:10</td><td>เซนไต คโยโซ โอตากุ เคบะ...</td><td></td><td class="dirt">ดิน 2000ม 10 ตัว</td></tr>
-          <tr><td class="race">6R</td><td class="time">16:45</td><td>เอนจิ เทอิน 96 คุม...</td><td></td><td class="dirt">ดิน 2000ม 9 ตัว</td></tr>
-          <tr><td class="race">7R</td><td class="time">17:25</td><td>นารุโตะ ไคเคียว โนะ ฮิดาริ เด... (B)</td><td></td><td class="dirt">ดิน 1400ม 9 ตัว</td></tr>
-          <tr><td class="race">8R</td><td class="time">17:55</td><td>ชิคาระ, โซเร โซ โนะ โทคุเบทสุ (A2)</td><td></td><td class="dirt">ดิน 1400ม 10 ตัว</td></tr>
-          <tr><td class="race">9R</td><td class="time">18:30</td><td>แอนดรอยด์ ฮาราจุกุ (C2)</td><td></td><td class="dirt">ดิน 900ม 10 ตัว</td></tr>
-          <tr><td class="race">10R</td><td class="time">19:00</td><td>ซากะ พันจา... (C2)</td><td></td><td class="dirt">ดิน 1400ม 12 ตัว</td></tr>
-          <tr><td class="race">11R</td><td class="time">19:30</td><td>ฮิดาริ -thread พังค์ (3ขวบ)</td><td></td><td class="dirt">ดิน 2000ม 10 ตัว</td></tr>
-          <tr><td class="race">12R</td><td class="time">20:05</td><td>B1-3</td><td></td><td class="dirt">ดิน 2000ม 10 ตัว</td></tr>
-        </table>
-      </div>
-      <div class="track"><h2>ซากะ - ครั้งที่ 15 วันที่ 4 แดดออก/ดินดี</h2>
-        <table>
-          <tr><th>R</th><th>เวลาเริ่ม</th><th>ชื่อการแข่ง</th><th>เกรด</th><th>ระยะทาง/พื้น</th></tr>
-          <tr><td class="race">1R</td><td class="time">14:55</td><td>2ขวบ-3</td><td></td><td class="dirt">ดิน 1300ม 9 ตัว</td></tr>
-          <tr><td class="race">2R</td><td class="time">15:30</td><td>2ขวบ-2</td><td></td><td class="dirt">ดิน 1300ม 9 ตัว</td></tr>
-          <tr><td class="race">3R</td><td class="time">16:00</td><td>C1-7</td><td></td><td class="dirt">ดิน 1600ม 10 ตัว</td></tr>
-          <tr><td class="race">4R</td><td class="time">16:35</td><td>โกโต โมมิจิ Tokubetsu (C1)</td><td></td><td class="dirt">ดิน 1600ม 9 ตัว</td></tr>
-          <tr><td class="race">5R</td><td class="time">17:05</td><td>ยามากุชิ ริงโก Tokubetsu (C1)</td><td></td><td class="dirt">ดิน 1600ม 11 ตัว</td></tr>
-          <tr><td class="race">6R</td><td class="time">17:35</td><td>C1-6</td><td></td><td class="dirt">ดิน 1600ม 10 ตัว</td></tr>
-          <tr><td class="race">7R</td><td class="time">18:10</td><td>C1-5</td><td></td><td class="dirt">ดิน 1600ม 11 ตัว</td></tr>
-          <tr><td class="race">8R</td><td class="time">18:45</td><td>C1-4</td><td></td><td class="dirt">ดิน 1600ม 10 ตัว</td></tr>
-          <tr><td class="race">9R</td><td class="time">19:20</td><td>C3-3</td><td></td><td class="dirt">ดิน 1400ม 11 ตัว</td></tr>
-          <tr><td class="race">10R</td><td class="time">19:50</td><td>C3-2</td><td></td><td class="dirt">ดิน 1400ม 12 ตัว</td></tr>
-          <tr><td class="race">11R</td><td class="time">20:20</td><td>ทามาชิเก Tokubetsu (C3)</td><td></td><td class="dirt">ดิน 1400ม 8 ตัว</td></tr>
-          <tr><td class="race">12R</td><td class="time">20:50</td><td>ไฟนอล เรซ (C3)</td><td></td><td class="dirt">ดิน 1300ม 12 ตัว</td></tr>
-        </table>
-      </div>
-    </div>
   </div>
 </div>
 
 <script>
-let currentMainTab = 'jra';
-let currentLang = {jra: 'jp', nar: 'jp'};
+let chosenLang = localStorage.getItem('keibaLang') || 'jp';
 
-function openMainTab(evt, tab) {
+function openMainTab(tab) {
   document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
   document.getElementById(tab).classList.add('active');
   document.querySelectorAll('.main-tab-btn').forEach(b => b.classList.remove('active'));
-  evt.currentTarget.classList.add('active');
-  currentMainTab = tab;
-  document.getElementById('jra-lang-tabs').style.display = tab === 'jra' ? 'flex' : 'none';
-  document.getElementById('nar-lang-tabs').style.display = tab === 'nar' ? 'flex' : 'none';
-  setLang(evt, currentLang[tab], tab);
+  event.target.classList.add('active');
+  setLanguage(chosenLang);
 }
 
-function setLang(evt, lang, mainTab) {
-  const contentId = mainTab + '-' + lang;
-  document.querySelectorAll('#' + mainTab + ' .lang-content').forEach(c => c.classList.remove('active'));
-  document.getElementById(contentId).classList.add('active');
-  document.querySelectorAll('#' + mainTab + '-lang-tabs .lang-btn').forEach(b => b.classList.remove('active'));
-  evt.currentTarget.classList.add('active');
-  currentLang[mainTab] = lang;
+function setLanguage(lang) {
+  chosenLang = lang;
+  localStorage.setItem('keibaLang', lang);
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + lang).classList.add('active');
+
+  const currentTab = document.querySelector('.content.active').id;
+  document.querySelectorAll('#' + currentTab + ' .lang-content').forEach(c => c.classList.remove('active'));
+  document.getElementById(currentTab + '-' + lang).classList.add('active');
 
   const titles = {
     jp: "2025年11月30日 競馬発走表",
-    en: "Horse Racing Schedule – Nov 30, 2025",
+    en: "Japan Racing Schedule – November 30, 2025",
     th: "ตารางแข่งม้า – 30 พ.ย. 2025"
   };
   document.getElementById('main-title').textContent = titles[lang];
 }
+
+document.addEventListener('DOMContentLoaded', () => setLanguage(chosenLang));
 </script>
 
-<footer>Updated with your new screenshots for NAR races (Mizusawa, Kochi, Saga) • 2025/11/30 • JRA times fixed to 09:31 start</footer>
+<footer>2025/11/30 • Tokyo R1 09:31 • Full JRA + NAR • Language Saved • Enjoy the Races!</footer>
 </body>
 </html>
